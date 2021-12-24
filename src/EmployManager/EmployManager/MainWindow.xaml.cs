@@ -23,6 +23,7 @@ namespace EmployManager
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = App.Current.MainViewModel;
         }
     }
 }

@@ -7,6 +7,36 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-
+        <Grid.ColumnDefinitions>  
+            <ColumnDefinition Width="150"></ColumnDefinition>  
+            <ColumnDefinition Width="Auto"></ColumnDefinition>  
+            <ColumnDefinition></ColumnDefinition>  
+        </Grid.ColumnDefinitions>
+        <ListView x:Name="EmployeeList" ItemsSource="{Binding Employees, Mode=OneWay}" Grid.Column="0">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Width = "100">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding Image}" Stretch="UniformToFill" 
+                                       Height="100"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding JobTitle}" Width="100"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Name}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <GridSplitter HorizontalAlignment="Center"   
+                      VerticalAlignment="Stretch"   
+                      Grid.Column="1"   
+                      Width="5" Background="Silver">  
+        </GridSplitter>
+        <StackPanel Grid.Column="2">
+            <TextBox Text="{Binding SelectedItem.JobTitle, ElementName=EmployeeList, Mode=OneWay}"/>
+            <TextBox Text="{Binding SelectedItem.Name, ElementName=EmployeeList, Mode=OneWay}"/>
+            <Image Source="{Binding SelectedItem.Image, ElementName=EmployeeList, Mode=OneWay}"/>
+        </StackPanel>
     </Grid>
 </Window>
