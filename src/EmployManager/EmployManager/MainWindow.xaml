@@ -8,11 +8,14 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <Grid.ColumnDefinitions>  
-            <ColumnDefinition Width="150"></ColumnDefinition>  
+            <ColumnDefinition Width="315"></ColumnDefinition>  
             <ColumnDefinition Width="Auto"></ColumnDefinition>  
             <ColumnDefinition></ColumnDefinition>  
         </Grid.ColumnDefinitions>
-        <ListView x:Name="EmployeeList" ItemsSource="{Binding Employees, Mode=OneWay}" Grid.Column="0">
+        <ListView x:Name="EmployeeList"
+                  ItemsSource="{Binding Employees, Mode=OneWay}"
+                  SelectedItem="{Binding Selected}"
+                  Grid.Column="0">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Width = "100">
@@ -24,7 +27,7 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
                     <GridViewColumn DisplayMemberBinding="{Binding JobTitle}" Width="100"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding Name}"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Name}" Width="Auto"/>
                 </GridView>
             </ListView.View>
         </ListView>
@@ -33,10 +36,20 @@
                       Grid.Column="1"   
                       Width="5" Background="Silver">  
         </GridSplitter>
-        <StackPanel Grid.Column="2">
-            <TextBox Text="{Binding SelectedItem.JobTitle, ElementName=EmployeeList, Mode=OneWay}"/>
-            <TextBox Text="{Binding SelectedItem.Name, ElementName=EmployeeList, Mode=OneWay}"/>
-            <Image Source="{Binding SelectedItem.Image, ElementName=EmployeeList, Mode=OneWay}"/>
-        </StackPanel>
+        <DockPanel Grid.Column="2">
+            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" FlowDirection="RightToLeft" Visibility="{Binding DisplayEmployeeVisibility}">
+                <Button Content="Delete" Command="{Binding DeleteSelectedCommand}"/>
+                <Button Content="Edit"/>
+            </StackPanel>
+            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" FlowDirection="RightToLeft" Visibility="{Binding EditEmployeeVisibility}">
+                <Button Content="Cancel"/>
+                <Button Content="Save"/>
+            </StackPanel>
+            <StackPanel>
+                <TextBox Text="{Binding SelectedItem.JobTitle, ElementName=EmployeeList, Mode=OneWay}"/>
+                <TextBox Text="{Binding SelectedItem.Name, ElementName=EmployeeList, Mode=OneWay}"/>
+                <Image Source="{Binding SelectedItem.Image, ElementName=EmployeeList, Mode=OneWay}"/>
+            </StackPanel>
+        </DockPanel>
     </Grid>
 </Window>

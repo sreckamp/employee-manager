@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Windows.Media.Imaging;
 using EmployManager.Model;
 
@@ -6,11 +7,13 @@ namespace EmployManager
 {
     public class EmployeeViewModel
     {
+        private readonly IEmployeeManager _manager;
         private readonly Employee _employee;
         private BitmapImage _image = null;
 
-        public EmployeeViewModel(Employee employee)
+        public EmployeeViewModel(IEmployeeManager manager, Employee employee)
         {
+            _manager = manager ?? throw new ArgumentNullException(nameof(manager));
             _employee = employee;
         }
 
@@ -37,6 +40,11 @@ namespace EmployManager
                 _image.Freeze();
                 return _image;
             }
+        }
+
+        public void Delete()
+        {
+            _manager.Delete(_employee);
         }
     }
 }
