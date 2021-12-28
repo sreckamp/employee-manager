@@ -16,6 +16,10 @@ namespace EmployManager.Model
         private readonly EmployeeDatabaseContext _context = new();
         private bool _disposed;
 
+        public event EventHandler<Employee> EmployeeAdded;
+        public event EventHandler<Employee> EmployeeDeleted;
+        public event EventHandler<Employee> EmployeeUpdated;
+
         /// <inheritdoc/>
         public IEnumerable<Employee> Employees { get; }
 
@@ -67,17 +71,27 @@ namespace EmployManager.Model
             CheckDisposed();
             _context.Remove(employee);
             _context.SaveChanges();
+            EmployeeDeleted?.Invoke(this, employee);
         }
 
         /// <inheritdoc/>
         public void Save(Employee employee)
         {
             CheckDisposed();
-            if (!Employees.Contains(employee))
+            var added = !Employees.Contains(employee);
+            if (added)
             {
                 _context.Add(employee);
             }
             _context.SaveChanges();
+            if (added)
+            {
+                EmployeeAdded?.Invoke(this, employee);
+            }
+            else
+            {
+                EmployeeUpdated?.Invoke(this, employee);
+            }
         }
 
         /// <inheritdoc/>

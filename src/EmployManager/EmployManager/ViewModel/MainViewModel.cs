@@ -19,6 +19,7 @@ namespace EmployManager.ViewModel
         public MainViewModel(IEmployeeManager manager)
         {
             _manager = manager ?? throw new ArgumentNullException(nameof(manager));
+            AlertViewModel = new AlertViewModel(_manager);
             AddCommand = new RelayCommand(AddEmployee);
             DeleteSelectedCommand = new RelayCommand(DeleteSelectedEmployee);
             EditSelectedCommand = new RelayCommand(EditActiveEmployee);
@@ -31,6 +32,8 @@ namespace EmployManager.ViewModel
 
         public bool ShowingSelection => Selected == Active;
         public bool NotShowingSelection => !ShowingSelection;
+
+        public AlertViewModel AlertViewModel { get; }
 
         public EmployeeViewModel Selected
         {
@@ -110,12 +113,7 @@ namespace EmployManager.ViewModel
             Active.Save();
             if (!ShowingSelection)
             {
-                ToasterText = $"Added {Active.Name}";
                 OnPropertyChanged(nameof(Employees));
-            }
-            else
-            {
-                ToasterText = $"Updated {Active.Name}";
             }
             IsReadOnly = true;
             Active = null;
@@ -128,19 +126,6 @@ namespace EmployManager.ViewModel
             IsReadOnly = true;
         }
 
-
-        private string _toasterText;
-        public string ToasterText
-        {
-            get => _toasterText;
-            set
-            {
-                Debug.WriteLine($"ToasterText:{_toasterText}=>{value}");
-                _toasterText = value;
-                OnPropertyChanged(nameof(ToasterText));
-            }
-        }
-        
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace EmployManager.Model
 {
@@ -7,6 +8,10 @@ namespace EmployManager.Model
     /// </summary>
     public interface IEmployeeManager
     {
+        event EventHandler<Employee> EmployeeAdded;
+        event EventHandler<Employee> EmployeeDeleted;
+        event EventHandler<Employee> EmployeeUpdated;
+
         /// <summary>
         /// The list of active employees
         /// </summary>

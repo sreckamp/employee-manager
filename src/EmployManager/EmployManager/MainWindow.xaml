@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EmployManager"
+        xmlns:view="clr-namespace:EmployManager.View"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
@@ -16,23 +17,8 @@
             <StackPanel DockPanel.Dock="Right">
                 <Button Content="+" Command="{Binding AddCommand}" IsEnabled="{Binding ShowingSelection}"/>
             </StackPanel>
-            <TextBlock Height="0" DockPanel.Dock="Bottom" Text="{Binding ToasterText,NotifyOnTargetUpdated=True}">
-                <TextBlock.Triggers>
-                    <EventTrigger RoutedEvent="Binding.TargetUpdated">
-                        <BeginStoryboard>
-                            <Storyboard>
-                                <DoubleAnimation Storyboard.TargetProperty="Height"
-                                                 From="0.0" To="25.0" Duration="0:0:0.5"/>
-                                <DoubleAnimation Storyboard.TargetProperty="Height"
-                                                 From="25.0" To="0.0" Duration="0:0:0.5"
-                                                 BeginTime="0:0:12"/>
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </EventTrigger>
-                </TextBlock.Triggers>
-            </TextBlock>
-            <ListView x:Name="EmployeeList"
-                      IsEnabled="{Binding ShowingSelection}"
+            <view:ToasterAlert Text="{Binding AlertViewModel.AlertText}" DockPanel.Dock="Bottom"/>
+            <ListView IsEnabled="{Binding ShowingSelection}"
                       ItemsSource="{Binding Employees, Mode=OneWay}"
                       SelectedItem="{Binding Selected}">
                 <ListView.View>
