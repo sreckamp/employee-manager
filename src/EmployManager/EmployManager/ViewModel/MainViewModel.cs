@@ -38,7 +38,6 @@ namespace EmployManager.ViewModel
             set
             {
                 _selected = value;
-                Debug.WriteLine($"Selected {_selected?.Name} [{ShowingSelection} {Selected?.Name}?={Active?.Name}]");
                 OnPropertyChanged(nameof(Active));
                 OnPropertyChanged(nameof(Selected));
                 OnPropertyChanged(nameof(ActiveVisibility));
@@ -53,7 +52,6 @@ namespace EmployManager.ViewModel
             set
             {
                 _active = value;
-                Debug.WriteLine($"Active {_active?.Name}");
                 OnPropertyChanged(nameof(Active));
                 OnPropertyChanged(nameof(ActiveVisibility));
                 OnPropertyChanged(nameof(ShowingSelection));
@@ -112,7 +110,12 @@ namespace EmployManager.ViewModel
             Active.Save();
             if (!ShowingSelection)
             {
+                ToasterText = $"Added {Active.Name}";
                 OnPropertyChanged(nameof(Employees));
+            }
+            else
+            {
+                ToasterText = $"Updated {Active.Name}";
             }
             IsReadOnly = true;
             Active = null;
@@ -125,6 +128,19 @@ namespace EmployManager.ViewModel
             IsReadOnly = true;
         }
 
+
+        private string _toasterText;
+        public string ToasterText
+        {
+            get => _toasterText;
+            set
+            {
+                Debug.WriteLine($"ToasterText:{_toasterText}=>{value}");
+                _toasterText = value;
+                OnPropertyChanged(nameof(ToasterText));
+            }
+        }
+        
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
