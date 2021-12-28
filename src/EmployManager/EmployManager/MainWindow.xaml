@@ -12,43 +12,46 @@
             <ColumnDefinition Width="Auto"></ColumnDefinition>  
             <ColumnDefinition></ColumnDefinition>  
         </Grid.ColumnDefinitions>
-        <ListView x:Name="EmployeeList"
-                  ItemsSource="{Binding Employees, Mode=OneWay}"
-                  SelectedItem="{Binding Selected}"
-                  Grid.Column="0">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Width = "100">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <Image Source="{Binding Image}" Stretch="UniformToFill" 
-                                       Height="100"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn DisplayMemberBinding="{Binding JobTitle}" Width="100"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding Name}" Width="Auto"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
+        <DockPanel Grid.Column="0">
+            <StackPanel DockPanel.Dock="Right">
+                <Button Content="+" Command="{Binding AddCommand}" IsEnabled="{Binding ShowingSelection}"/>
+            </StackPanel>
+            <ListView x:Name="EmployeeList"
+                      IsEnabled="{Binding ShowingSelection}"
+                      ItemsSource="{Binding Employees, Mode=OneWay}"
+                      SelectedItem="{Binding Selected}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Width = "100">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Image Source="{Binding Image}" Stretch="UniformToFill" 
+                                           Height="100"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding JobTitle}" Width="100"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Name}" Width="Auto"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </DockPanel>
         <GridSplitter HorizontalAlignment="Center"   
                       VerticalAlignment="Stretch"   
                       Grid.Column="1"   
                       Width="5" Background="Silver">  
         </GridSplitter>
-        <DockPanel Grid.Column="2">
-            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" FlowDirection="RightToLeft" Visibility="{Binding DisplayEmployeeVisibility}">
-                <Button Content="Delete" Command="{Binding DeleteSelectedCommand}"/>
-                <Button Content="Edit"/>
-            </StackPanel>
-            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" FlowDirection="RightToLeft" Visibility="{Binding EditEmployeeVisibility}">
-                <Button Content="Cancel"/>
-                <Button Content="Save"/>
+        <DockPanel Grid.Column="2" Visibility="{Binding ActiveVisibility}">
+            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" FlowDirection="RightToLeft">
+                <Button Content="Cancel" Command="{Binding RevertCommand}" Visibility="{Binding EditVisibility}"/>
+                <Button Content="Save" Command="{Binding SaveCommand}" Visibility="{Binding EditVisibility}"/>
+                <Button Content="Delete" Command="{Binding DeleteSelectedCommand}" Visibility="{Binding ReadOnlyVisibility}"/>
+                <Button Content="Edit" Command="{Binding EditSelectedCommand}" Visibility="{Binding ReadOnlyVisibility}"/>
             </StackPanel>
             <StackPanel>
-                <TextBox Text="{Binding SelectedItem.JobTitle, ElementName=EmployeeList, Mode=OneWay}"/>
-                <TextBox Text="{Binding SelectedItem.Name, ElementName=EmployeeList, Mode=OneWay}"/>
-                <Image Source="{Binding SelectedItem.Image, ElementName=EmployeeList, Mode=OneWay}"/>
+                <TextBox IsReadOnly="{Binding IsReadOnly}" Text="{Binding Active.JobTitle}"/>
+                <TextBox IsReadOnly="{Binding IsReadOnly}" Text="{Binding Active.Name}"/>
+                <Image Source="{Binding Active.Image}"/>
             </StackPanel>
         </DockPanel>
     </Grid>
