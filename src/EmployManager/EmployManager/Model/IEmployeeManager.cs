@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace EmployManager.Model
 {
@@ -7,6 +8,10 @@ namespace EmployManager.Model
     /// </summary>
     public interface IEmployeeManager
     {
+        event EventHandler<Employee> EmployeeAdded;
+        event EventHandler<Employee> EmployeeDeleted;
+        event EventHandler<Employee> EmployeeUpdated;
+
         /// <summary>
         /// The list of active employees
         /// </summary>
@@ -16,15 +21,6 @@ namespace EmployManager.Model
         /// Initialize the data source
         /// </summary>
         void Initialize();
-
-        /// <summary>
-        /// Add a new employee
-        /// </summary>
-        /// <param name="title">The job title of the employee</param>
-        /// <param name="name">The name of the employee</param>
-        /// <param name="imagePath">A path to an image of the employee</param>
-        /// <returns>The newly created employee</returns>
-        Employee Add(string title, string name, string imagePath = null);
 
         /// <summary>
         /// Delete the given employee
@@ -37,5 +33,11 @@ namespace EmployManager.Model
         /// </summary>
         /// <param name="employee">The employee to save</param>
         void Save(Employee employee);
+
+        /// <summary>
+        /// Revert the changes to the employee
+        /// </summary>
+        /// <param name="employee">The employee to revert</param>
+        void Revert(Employee employee);
     }
 }

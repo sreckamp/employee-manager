@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
@@ -16,6 +15,10 @@ namespace EmployManager.Model
     {
         private readonly EmployeeDatabaseContext _context = new();
         private bool _disposed;
+
+        public event EventHandler<Employee> EmployeeAdded;
+        public event EventHandler<Employee> EmployeeDeleted;
+        public event EventHandler<Employee> EmployeeUpdated;
 
         /// <inheritdoc/>
         public IEnumerable<Employee> Employees { get; }
@@ -49,8 +52,7 @@ namespace EmployManager.Model
             Add("Temp", "Ryan Howard", "images/ryan.png");
         }
 
-        /// <inheritdoc/>
-        public Employee Add(string title, string name, string imagePath = null)
+        private void Add(string title, string name, string imagePath = null)
         {
             CheckDisposed();
             byte[] imageData = null;
@@ -61,7 +63,6 @@ namespace EmployManager.Model
             var newEmployee = new Employee {JobTitle = title, Name = name, Image = imageData};
             _context.Add(newEmployee);
             _context.SaveChanges();
-            return newEmployee;
         }
 
         /// <inheritdoc/>
@@ -70,13 +71,34 @@ namespace EmployManager.Model
             CheckDisposed();
             _context.Remove(employee);
             _context.SaveChanges();
+            EmployeeDeleted?.Invoke(this, employee);
         }
 
         /// <inheritdoc/>
         public void Save(Employee employee)
         {
             CheckDisposed();
+            var added = !Employees.Contains(employee);
+            if (added)
+            {
+                _context.Add(employee);
+            }
             _context.SaveChanges();
+            if (added)
+            {
+                EmployeeAdded?.Invoke(this, employee);
+            }
+            else
+            {
+                EmployeeUpdated?.Invoke(this, employee);
+            }
+        }
+
+        /// <inheritdoc/>
+        public void Revert(Employee employee)
+        {
+            CheckDisposed();
+            _context.Entry(employee).Reload();
         }
 
         private void CheckDisposed()
