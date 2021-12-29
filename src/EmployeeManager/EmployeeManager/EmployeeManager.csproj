@@ -4,7 +4,7 @@
         <OutputType>WinExe</OutputType>
         <TargetFramework>net5.0-windows</TargetFramework>
         <UseWPF>true</UseWPF>
-        <RootNamespace>EmployManager</RootNamespace>
+        <Authors>Steve Reckamp</Authors>
     </PropertyGroup>
 
     <ItemGroup>
@@ -41,6 +41,10 @@
       <None Update="images\ryan.png">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\lcars\LCARSToolkit\LCARSToolkit.Controls\LCARSToolkit.Controls.csproj" />
     </ItemGroup>
 
 </Project>

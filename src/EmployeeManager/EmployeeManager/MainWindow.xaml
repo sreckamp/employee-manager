@@ -5,55 +5,106 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EmployManager"
         xmlns:view="clr-namespace:EmployManager.View"
+        xmlns:lcars="clr-namespace:LCARSToolkit.Controls;assembly=LCARSToolkit.Controls"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <Grid.ColumnDefinitions>  
-            <ColumnDefinition Width="315"></ColumnDefinition>  
-            <ColumnDefinition Width="Auto"></ColumnDefinition>  
-            <ColumnDefinition></ColumnDefinition>  
-        </Grid.ColumnDefinitions>
-        <DockPanel Grid.Column="0">
-            <StackPanel DockPanel.Dock="Right">
-                <Button Content="+" Command="{Binding AddCommand}" IsEnabled="{Binding ShowingSelection}"/>
-            </StackPanel>
-            <view:ToasterAlert Text="{Binding AlertViewModel.AlertText}" DockPanel.Dock="Bottom"/>
-            <ListView IsEnabled="{Binding ShowingSelection}"
-                      ItemsSource="{Binding Employees, Mode=OneWay}"
-                      SelectedItem="{Binding Selected}">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Width = "100">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Image Source="{Binding Image}" Stretch="UniformToFill" 
-                                           Height="100"/>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                        <GridViewColumn DisplayMemberBinding="{Binding JobTitle}" Width="100"/>
-                        <GridViewColumn DisplayMemberBinding="{Binding Name}" Width="Auto"/>
-                    </GridView>
-                </ListView.View>
-            </ListView>
-        </DockPanel>
-        <GridSplitter HorizontalAlignment="Center"   
-                      VerticalAlignment="Stretch"   
-                      Grid.Column="1"   
-                      Width="5" Background="Silver">  
-        </GridSplitter>
-        <DockPanel Grid.Column="2" Visibility="{Binding ActiveVisibility}">
-            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" FlowDirection="RightToLeft">
-                <Button Content="Cancel" Command="{Binding RevertCommand}" Visibility="{Binding EditVisibility}"/>
-                <Button Content="Save" Command="{Binding SaveCommand}" Visibility="{Binding EditVisibility}"/>
-                <Button Content="Delete" Command="{Binding DeleteSelectedCommand}" Visibility="{Binding ReadOnlyVisibility}"/>
-                <Button Content="Edit" Command="{Binding EditSelectedCommand}" Visibility="{Binding ReadOnlyVisibility}"/>
-            </StackPanel>
-            <StackPanel>
-                <TextBox IsReadOnly="{Binding IsReadOnly}" Text="{Binding Active.JobTitle}"/>
-                <TextBox IsReadOnly="{Binding IsReadOnly}" Text="{Binding Active.Name}"/>
-                <Image Source="{Binding Active.Image}"/>
-            </StackPanel>
-        </DockPanel>
-    </Grid>
+        Background="Black"
+        Title="Reckamp Employee Management System" Height="450" Width="1200">
+    <DockPanel Margin="10">
+        <Grid DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>  
+                <ColumnDefinition Width="Auto"></ColumnDefinition>  
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <lcars:Elbo Grid.Column="0" Column="200" Bar="50" InnerArcRadius="30" Fill="{StaticResource Static}" Corner="TopLeft"/>
+            <TextBlock Grid.Column="1" Text="R.E.M.S." FontFamily="{StaticResource LCARS}" FontSize="65" Margin="10,10" Height="50" VerticalAlignment="Top" Foreground="White" LineStackingStrategy="BlockLineHeight" LineHeight="50"/>
+            <lcars:Rectangle Grid.Column="2" Fill="{StaticResource Static}" Height="50" VerticalAlignment="Top" />
+            <!-- <lcars:LabeledButton Grid.Column="3" Content="&#128469;" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="{StaticResource Static}" Height="50" VerticalAlignment="Top" Margin="2,0" Stumps="None"/> -->
+            <lcars:LabeledButton Grid.Column="3" Content="&#x1F5D5;" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="{StaticResource Static}" Height="50" VerticalAlignment="Top" Margin="2,0" Stumps="None"/>
+            <!-- <lcars:LabeledButton Grid.Column="4" Content="&#128470;" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="{StaticResource Static}" Height="50" VerticalAlignment="Top" Margin="0,0,2,0" Stumps="None"/> -->
+            <lcars:LabeledButton Grid.Column="4" Content="&#x1F5D6;" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="{StaticResource Static}" Height="50" VerticalAlignment="Top" Margin="0,0,2,0" Stumps="None"/>
+            <lcars:LabeledButton Grid.Column="5" Content="X" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="{StaticResource Static}" Height="50" VerticalAlignment="Top" Stumps="Right"/>
+        </Grid>
+        <Grid DockPanel.Dock="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>  
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <lcars:Elbo Grid.Column="0" Column="200" Bar="50" InnerArcRadius="30" Fill="{StaticResource Static}" Corner="BottomLeft"/>
+            <lcars:Rectangle Grid.Column="1" Fill="{StaticResource Static}" Height="50" VerticalAlignment="Bottom"/>
+            <lcars:Stump Grid.Column="2" Fill="{StaticResource Static}" Diameter="50" VerticalAlignment="Bottom"/>
+        </Grid>
+        <Grid DockPanel.Dock="Left">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>  
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <lcars:LabeledButton Grid.Row="0"
+                                 Command="{Binding AddCommand}" IsEnabled="{Binding ShowingSelection}"
+                                 Content="Add Employee"
+                                 HorizontalContentAlignment="Center"
+                                 VerticalContentAlignment="Center"
+                                 Background="{StaticResource Primary}"
+                                 Height="200" Width="200"
+                                 Margin="0,5"
+                                 Stumps="None"/>
+            <lcars:Rectangle Grid.Row="1" Fill="{StaticResource Static}" Width="200" HorizontalAlignment="Left" />
+        </Grid>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="500"></ColumnDefinition>  
+                <ColumnDefinition Width="Auto"></ColumnDefinition>  
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <DockPanel Grid.Column="0">
+                <view:ToasterAlert Text="{Binding AlertViewModel.AlertText}" DockPanel.Dock="Bottom"/>
+                <ListBox IsEnabled="{Binding ShowingSelection}"
+                          ItemsSource="{Binding Employees, Mode=OneWay}"
+                          SelectedItem="{Binding Selected}"
+                          ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                    <ListBox.ItemContainerStyle> 
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter> 
+                            <Setter Property="Background" Value="Black"/> 
+                            <Setter Property="BorderThickness" Value="0"/> 
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <lcars:LabeledButton
+                                Background="{StaticResource Unavailable}"
+                                Margin="0,4"
+                                Height="50"
+                                Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=ContentPresenter}}"
+                                Content="{Binding JobTitle}"
+                                Label="{Binding Name}"
+                                VerticalContentAlignment="Center"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </DockPanel>
+            <GridSplitter HorizontalAlignment="Center"   
+                          VerticalAlignment="Stretch"   
+                          Grid.Column="1"
+                          Width="5" Background="Silver">  
+            </GridSplitter>
+            <DockPanel Grid.Column="2" Visibility="{Binding ActiveVisibility}">
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" FlowDirection="RightToLeft">
+                    <Button Content="Cancel" Command="{Binding RevertCommand}" Visibility="{Binding EditVisibility}"/>
+                    <Button Content="Save" Command="{Binding SaveCommand}" Visibility="{Binding EditVisibility}"/>
+                    <Button Content="Delete" Command="{Binding DeleteSelectedCommand}" Visibility="{Binding ReadOnlyVisibility}"/>
+                    <Button Content="Edit" Command="{Binding EditSelectedCommand}" Visibility="{Binding ReadOnlyVisibility}"/>
+                </StackPanel>
+                <StackPanel>
+                    <TextBox IsReadOnly="{Binding IsReadOnly}" Text="{Binding Active.JobTitle}"/>
+                    <TextBox IsReadOnly="{Binding IsReadOnly}" Text="{Binding Active.Name}"/>
+                    <Image Source="{Binding Active.Image}"/>
+                </StackPanel>
+            </DockPanel>
+        </Grid>
+    </DockPanel>
 </Window>
