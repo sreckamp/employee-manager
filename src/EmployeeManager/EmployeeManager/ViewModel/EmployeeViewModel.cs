@@ -22,7 +22,7 @@ namespace EmployManager.ViewModel
 
         public string Name
         {
-            get => _employee?.Name;
+            get => _employee?.Name.ToUpper();
             set
             {
                 _employee.Name = value;
@@ -32,7 +32,7 @@ namespace EmployManager.ViewModel
 
         public string JobTitle
         {
-            get => _employee?.JobTitle;
+            get => _employee?.JobTitle.ToUpper();
             set
             {
                 _employee.JobTitle = value;

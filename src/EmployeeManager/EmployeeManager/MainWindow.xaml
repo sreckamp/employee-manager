@@ -65,7 +65,11 @@
                 <ListBox IsEnabled="{Binding ShowingSelection}"
                           ItemsSource="{Binding Employees, Mode=OneWay}"
                           SelectedItem="{Binding Selected}"
-                          ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                          Style="{StaticResource CListBox}"
+                          Foreground="{StaticResource Orange}"
+                          lcars:Title.Text="EMPLOYEES"
+                          Margin = "50,0">
                     <ListBox.ItemContainerStyle> 
                         <Style TargetType="ListBoxItem">
                             <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter> 
@@ -75,14 +79,34 @@
                     </ListBox.ItemContainerStyle>
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <lcars:LabeledButton
-                                Background="{StaticResource Unavailable}"
-                                Margin="0,4"
-                                Height="50"
-                                Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=ContentPresenter}}"
-                                Content="{Binding JobTitle}"
-                                Label="{Binding Name}"
-                                VerticalContentAlignment="Center"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Row="0" Grid.Column="0" 
+                                           Text="{Binding Name}"
+                                           FontFamily="{StaticResource LCARS}"
+                                           FontSize="30"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left"
+                                           Foreground="Orange"/>
+                                <TextBlock Grid.Row="0" Grid.Column="1" 
+                                           Text="{Binding JobTitle}"
+                                           FontFamily="{StaticResource LCARS}"
+                                           FontSize="20"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Right"
+                                           Foreground="{StaticResource Unavailable}"/>
+                            </Grid>
+                            <!-- <lcars:LabeledButton -->
+                            <!--     Background="{StaticResource Unavailable}" -->
+                            <!--     Margin="0,4" -->
+                            <!--     Height="50" -->
+                            <!--     Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=ContentPresenter}}" -->
+                            <!--     Content="{Binding JobTitle}" -->
+                            <!--     Label="{Binding Name}" -->
+                            <!--     VerticalContentAlignment="Center"/> -->
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
