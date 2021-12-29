@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmployManager", "EmployManager\EmployManager.csproj", "{862D2755-6577-4753-91D8-C764F49A5417}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmployeeManager", "EmployeeManager\EmployeeManager.csproj", "{862D2755-6577-4753-91D8-C764F49A5417}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LCARSToolkit.Controls", "..\..\lcars\LCARSToolkit\LCARSToolkit.Controls\LCARSToolkit.Controls.csproj", "{EA637AF5-E2F3-4779-B0D5-DDB739B6105F}"
 EndProject
