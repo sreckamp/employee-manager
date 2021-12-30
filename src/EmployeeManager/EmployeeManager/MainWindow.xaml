@@ -12,6 +12,7 @@
         WindowStyle="None"
         ResizeMode="CanResizeWithGrip"
         AllowsTransparency="True"
+        Icon="{StaticResource Icon}"
         Title="Reckamp Employee Management System" Height="700" Width="1200">
     <DockPanel Margin="10">
         <Grid DockPanel.Dock="Top">

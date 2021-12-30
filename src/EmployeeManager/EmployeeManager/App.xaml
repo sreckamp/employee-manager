@@ -10,6 +10,7 @@
             </ResourceDictionary.MergedDictionaries>
 
             <BitmapImage x:Key="PlaceHolderImage" UriSource="pack://application:,,,/EmployeeManager;component/images/star-trek-placeholder.png"/>
+            <BitmapImage x:Key="Icon" UriSource="pack://application:,,,/EmployeeManager;component/images/star-trek-badge.ico"/>
             <Style TargetType="TextBox" x:Key="EditTextBox">
                 <Setter Property="FontFamily" Value="{StaticResource LCARS}"/>
                 <Setter Property="Background" Value="Transparent"/>

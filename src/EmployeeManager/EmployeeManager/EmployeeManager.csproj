@@ -19,6 +19,8 @@
       </Content>
       <None Remove="images\star trek-1.1s-200px.png" />
       <Resource Include="images\star-trek-placeholder.png" />
+      <None Remove="images\star-trek-badge.ico" />
+      <Resource Include="images\star-trek-badge.ico" />
     </ItemGroup>
 
     <ItemGroup>
