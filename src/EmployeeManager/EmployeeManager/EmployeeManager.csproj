@@ -17,6 +17,8 @@
       <Content Include="..\..\..\README.md">
         <Link>README.md</Link>
       </Content>
+      <None Remove="images\star trek-1.1s-200px.png" />
+      <Resource Include="images\star-trek-placeholder.png" />
     </ItemGroup>
 
     <ItemGroup>

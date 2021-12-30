@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace EmployManager.View
+namespace EmployeeManager.View
 {
     public partial class ToasterAlert : UserControl
     {

@@ -1,0 +1,110 @@
+﻿<UserControl x:Class="EmployeeManager.View.EmployeeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:lcars="clr-namespace:LCARSToolkit.Controls;assembly=LCARSToolkit.Controls"
+             xmlns:local="clr-namespace:EmployeeManager.View"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Template>
+        <ControlTemplate TargetType="local:EmployeeView">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <lcars:Elbo Fill="{TemplateBinding Fill}"
+                            Bar="{TemplateBinding Bar}"
+                            InnerArcRadius="{TemplateBinding InnerArcRadius}"
+                            Column="{TemplateBinding Column}"/>
+                <Grid Grid.Row="0" Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <lcars:Rectangle Grid.Column="0" Height="{TemplateBinding Bar}" Fill="{TemplateBinding Fill}" VerticalAlignment="Top"/>
+                    <lcars:Stump Grid.Column="1" Direction="Right" Diameter="{TemplateBinding Bar}" Fill="{TemplateBinding Fill}" VerticalAlignment="Top"/>
+                </Grid>
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0">
+                        <lcars:LabeledButton Style="{StaticResource SideKey}" Content="Edit" Width="{TemplateBinding Column}" Height="40"
+                                             Visibility="{Binding ReadOnlyVisibility}"
+                                             Command="{Binding EditCommand}"/>
+                        <lcars:LabeledButton Style="{StaticResource SideKey}" Content="Save" Width="{TemplateBinding Column}" Height="40"
+                                             Visibility="{Binding EditVisibility}"
+                                             Command="{Binding SaveCommand}"/>
+                        <lcars:LabeledButton Style="{StaticResource SideKey}" Content="Cancel" Width="{TemplateBinding Column}" Height="40"
+                                             Command="{Binding RevertCommand}"/>
+                    </StackPanel>
+                    <lcars:Rectangle Grid.Row="1" Width="{TemplateBinding Column}" Fill="{TemplateBinding Fill}" HorizontalAlignment="Left"/>
+                    <lcars:LabeledButton Grid.Row="2" Style="{StaticResource SideKey}" Content="Delete" Width="{TemplateBinding Column}" Height="40"
+                                         Command="{Binding DeleteCommand}"/>
+                </Grid>
+                <Grid Grid.Row="1" Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Image x:Name="UserImage" Grid.Row="0" Height="200" Margin="0,0,0,20" Source="{Binding Image}">
+                        <Image.Style>
+                            <Style TargetType="Image">
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <Trigger Property="Source" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                    </Image>
+                    <Image Grid.Row="0" Height="200" Margin="0,0,0,20" Source="{StaticResource PlaceHolderImage}">
+                        <Image.Style>
+                            <Style TargetType="Image">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Source, ElementName=UserImage}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                    </Image>
+                    <StackPanel Grid.Row="1">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource LabelTextBlock}"
+                                       Text="NAME:"
+                                       FontSize="30"
+                                       Margin="10,20,0,0"/>
+                            <TextBox Style="{StaticResource EditTextBox}"
+                                     IsReadOnly="{Binding IsReadOnly}"
+                                     Text="{Binding Name}"
+                                     FontSize="30"
+                                     Margin="10,20,0,0"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource LabelTextBlock}"
+                                       Text="TITLE:"
+                                       FontSize="30"
+                                       Margin="10,10,0,0"/>
+                            <TextBox Style="{StaticResource EditTextBox}"
+                                     IsReadOnly="{Binding IsReadOnly}"
+                                     Text="{Binding JobTitle}"
+                                     FontSize="30"
+                                     Margin="10,10,0,0"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </ControlTemplate>
+    </UserControl.Template>
+</UserControl>

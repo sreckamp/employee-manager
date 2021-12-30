@@ -2,11 +2,12 @@
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Media.Imaging;
-using EmployManager.Annotations;
-using EmployManager.Model;
+using EmployeeManager.Model;
+using Microsoft.Toolkit.Mvvm.Input;
 
-namespace EmployManager.ViewModel
+namespace EmployeeManager.ViewModel
 {
     public class EmployeeViewModel : INotifyPropertyChanged
     {
@@ -18,11 +19,20 @@ namespace EmployManager.ViewModel
         {
             _manager = manager ?? throw new ArgumentNullException(nameof(manager));
             _employee = employee ?? new Employee();
+            DeleteCommand = new RelayCommand(DeleteSelectedEmployee);
+            EditCommand = new RelayCommand(EditActiveEmployee);
+            SaveCommand = new RelayCommand(SaveActiveEmployee);
+            RevertCommand = new RelayCommand(RevertSelectedEmployee);
         }
+
+        public IRelayCommand DeleteCommand { get; }
+        public IRelayCommand EditCommand { get; }
+        public IRelayCommand SaveCommand { get; }
+        public IRelayCommand RevertCommand { get; }
 
         public string Name
         {
-            get => _employee?.Name.ToUpper();
+            get => _employee?.Name;
             set
             {
                 _employee.Name = value;
@@ -32,7 +42,7 @@ namespace EmployManager.ViewModel
 
         public string JobTitle
         {
-            get => _employee?.JobTitle.ToUpper();
+            get => _employee?.JobTitle;
             set
             {
                 _employee.JobTitle = value;
@@ -62,23 +72,51 @@ namespace EmployManager.ViewModel
             }
         }
 
-        public void Delete()
+        public Visibility EditVisibility => !IsReadOnly ? Visibility.Visible : Visibility.Collapsed;
+        public Visibility ReadOnlyVisibility => IsReadOnly ? Visibility.Visible : Visibility.Collapsed;
+
+        private bool _readOnly = true;
+        public bool IsReadOnly
         {
-            _manager.Delete(_employee);
+            get => _readOnly;
+            set
+            {
+                _readOnly = value;
+                OnPropertyChanged(nameof(IsReadOnly));
+                OnPropertyChanged(nameof(EditVisibility));
+                OnPropertyChanged(nameof(ReadOnlyVisibility));
+            }
         }
 
-        public void Save()
+        private void DeleteSelectedEmployee()
+        {
+            if (MessageBoxResult.Yes != MessageBox.Show($"Are you sure you'd like to delete {Name}?",
+                "Delete Confirmation",
+                MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No)) return;
+
+            _manager.Delete(_employee);
+            OnPropertyChanged(nameof(EditVisibility));
+        }
+
+        private void EditActiveEmployee()
+        {
+            IsReadOnly = false;
+        }
+
+        private void SaveActiveEmployee()
         {
             _manager.Save(_employee);
+            IsReadOnly = true;
         }
 
-        public void Revert()
+        private void RevertSelectedEmployee()
         {
             _image = null;
             _manager.Revert(_employee);
             OnPropertyChanged(nameof(Name));
             OnPropertyChanged(nameof(JobTitle));
             OnPropertyChanged(nameof(Image));
+            IsReadOnly = true;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

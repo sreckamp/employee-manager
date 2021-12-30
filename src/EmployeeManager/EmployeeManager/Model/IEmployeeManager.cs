@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace EmployManager.Model
+namespace EmployeeManager.Model
 {
     /// <summary>
     /// Manages the state of the set of employees
@@ -11,6 +11,7 @@ namespace EmployManager.Model
         event EventHandler<Employee> EmployeeAdded;
         event EventHandler<Employee> EmployeeDeleted;
         event EventHandler<Employee> EmployeeUpdated;
+        event EventHandler<Employee> EmployeeReverted;
 
         /// <summary>
         /// The list of active employees

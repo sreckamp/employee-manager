@@ -1,9 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.IO;
-using System.Windows.Media.Imaging;
 
-namespace EmployManager.Model
+namespace EmployeeManager.Model
 {
     public class Employee
     {

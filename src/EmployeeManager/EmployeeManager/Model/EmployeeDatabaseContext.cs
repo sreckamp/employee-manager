@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 
-namespace EmployManager.Model
+namespace EmployeeManager.Model
 {
     public class EmployeeDatabaseContext : DbContext
     {
