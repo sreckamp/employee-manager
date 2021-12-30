@@ -23,8 +23,27 @@ namespace EmployeeManager.ViewModel
             _manager.EmployeeReverted += CloseEmployeeView;
             AlertViewModel = new AlertViewModel(_manager);
             AddCommand = new RelayCommand(AddEmployee);
+            MinimizeWindowCommand = new RelayCommand(() => WindowState = WindowState.Minimized);
+            MaximizeWindowCommand = new RelayCommand(() => WindowState = WindowState == WindowState.Maximized
+                ? WindowState.Normal
+                : WindowState.Maximized);
+            ShutdownCommand = new RelayCommand(() => Application.Current.MainWindow.Close());
         }
 
+        public IRelayCommand MinimizeWindowCommand { get; }
+        public IRelayCommand MaximizeWindowCommand { get; }
+        public IRelayCommand ShutdownCommand { get; }
+
+        private WindowState _windowState = WindowState.Maximized;
+        public WindowState WindowState
+        {
+            get => _windowState;
+            set
+            {
+                _windowState = value;
+                OnPropertyChanged(nameof(WindowState));
+            }
+        }
         private void CloseEmployeeView(object sender, Employee e)
         {
             Debug.WriteLine("Close View");

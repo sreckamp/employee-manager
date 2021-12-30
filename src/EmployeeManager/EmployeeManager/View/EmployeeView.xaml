@@ -9,28 +9,21 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Template>
         <ControlTemplate TargetType="local:EmployeeView">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <lcars:Elbo Fill="{TemplateBinding Fill}"
-                            Bar="{TemplateBinding Bar}"
-                            InnerArcRadius="{TemplateBinding InnerArcRadius}"
-                            Column="{TemplateBinding Column}"/>
-                <Grid Grid.Row="0" Column="1">
+            <DockPanel>
+                <Grid DockPanel.Dock="Top">
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <lcars:Rectangle Grid.Column="0" Height="{TemplateBinding Bar}" Fill="{TemplateBinding Fill}" VerticalAlignment="Top"/>
-                    <lcars:Stump Grid.Column="1" Direction="Right" Diameter="{TemplateBinding Bar}" Fill="{TemplateBinding Fill}" VerticalAlignment="Top"/>
+                    <lcars:Elbo Grid.Column="0" Fill="{TemplateBinding Fill}"
+                                Bar="{TemplateBinding Bar}"
+                                InnerArcRadius="{TemplateBinding InnerArcRadius}"
+                                Column="{TemplateBinding Column}"/>
+                    <lcars:Rectangle Grid.Column="1" Height="{TemplateBinding Bar}" Fill="{TemplateBinding Fill}" VerticalAlignment="Top"/>
+                    <lcars:Stump Grid.Column="2" Direction="Right" Diameter="{TemplateBinding Bar}" Fill="{TemplateBinding Fill}" VerticalAlignment="Top"/>
                 </Grid>
-                <Grid Grid.Row="1">
+                <Grid DockPanel.Dock="Left">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
@@ -48,10 +41,11 @@
                     </StackPanel>
                     <lcars:Rectangle Grid.Row="1" Width="{TemplateBinding Column}" Fill="{TemplateBinding Fill}" HorizontalAlignment="Left"/>
                     <lcars:LabeledButton Grid.Row="2" Style="{StaticResource SideKey}" Content="Delete" Width="{TemplateBinding Column}" Height="40"
-                                         Command="{Binding DeleteCommand}"/>
+                                         Command="{Binding ShowVerificationCommand}"/>
                 </Grid>
-                <Grid Grid.Row="1" Grid.Column="1">
+                <Grid>
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
@@ -103,8 +97,43 @@
                                      Margin="10,10,0,0"/>
                         </StackPanel>
                     </StackPanel>
+                    <DockPanel Visibility="{Binding VerificationVisible}" Margin="3,0,0,5" Grid.Row="2">
+                        <Grid DockPanel.Dock="Bottom">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <lcars:Rectangle VerticalAlignment="Bottom" Height="40" Fill="{StaticResource Orange}"/>
+                            <lcars:Elbo Grid.Column="1" Bar="40" Column="60" InnerArcRadius="20" Corner="BottomRight" Fill="{StaticResource Orange}"/>
+                        </Grid>
+                        <Grid DockPanel.Dock="Top">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <lcars:Stump Margin="20,0,0,0" Direction="Left" VerticalAlignment="Top" Diameter="20" Fill="{StaticResource Orange}"/>
+                            <lcars:Rectangle Grid.Column="1" VerticalAlignment="Top" Height="20" Fill="{StaticResource Orange}"/>
+                            <lcars:Elbo Grid.Column="2" Bar="20" Column="60" InnerArcRadius="20" Corner="TopRight" Fill="{StaticResource Orange}"/>
+                        </Grid>
+                        <lcars:Rectangle DockPanel.Dock="Right" HorizontalAlignment="Right" Width="60" Fill="{StaticResource Orange}"/>
+                        <UniformGrid Rows="2">
+                            <TextBlock Grid.Row="0" Style="{StaticResource LcarsTextBlock}"
+                                       Text="ARE YOU SURE YOU WANT TO DELETE THIS EMPLOYEE?  THIS ACTION IS NOT REVERSABLE."
+                                       TextAlignment="Center" TextWrapping="Wrap"
+                                       VerticalAlignment="Center"
+                                       FontSize="40"
+                                       Foreground="White"/>
+                            <UniformGrid Grid.Row="1" Columns="2">
+                                <lcars:LabeledButton Grid.Column="0" HorizontalAlignment="Center" Height="60" Width="200" Content="YES"
+                                                     Command="{Binding DeleteCommand}"/>
+                                <lcars:LabeledButton Grid.Column="1" HorizontalAlignment="Center" Height="60" Width="200" Content="NO"
+                                                     Command="{Binding HideVerificationCommand}"/>
+                            </UniformGrid>
+                        </UniformGrid>
+                    </DockPanel>
                 </Grid>
-            </Grid>
+            </DockPanel>
         </ControlTemplate>
     </UserControl.Template>
 </UserControl>

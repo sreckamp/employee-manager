@@ -23,12 +23,16 @@ namespace EmployeeManager.ViewModel
             EditCommand = new RelayCommand(EditActiveEmployee);
             SaveCommand = new RelayCommand(SaveActiveEmployee);
             RevertCommand = new RelayCommand(RevertSelectedEmployee);
+            ShowVerificationCommand = new RelayCommand(() => IsVerification = true);
+            HideVerificationCommand = new RelayCommand(() => IsVerification = false);
         }
 
-        public IRelayCommand DeleteCommand { get; }
         public IRelayCommand EditCommand { get; }
         public IRelayCommand SaveCommand { get; }
         public IRelayCommand RevertCommand { get; }
+        public IRelayCommand ShowVerificationCommand { get; }
+        public IRelayCommand HideVerificationCommand { get; }
+        public IRelayCommand DeleteCommand { get; }
 
         public string Name
         {
@@ -90,13 +94,23 @@ namespace EmployeeManager.ViewModel
 
         private void DeleteSelectedEmployee()
         {
-            if (MessageBoxResult.Yes != MessageBox.Show($"Are you sure you'd like to delete {Name}?",
-                "Delete Confirmation",
-                MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No)) return;
-
             _manager.Delete(_employee);
             OnPropertyChanged(nameof(EditVisibility));
         }
+
+        private bool _isVerification = false;
+
+        private bool IsVerification
+        {
+            get => _isVerification;
+            set
+            {
+                _isVerification = value;
+                OnPropertyChanged(nameof(VerificationVisible));
+            }
+        }
+
+        public Visibility VerificationVisible => IsVerification ? Visibility.Visible : Visibility.Collapsed;
 
         private void EditActiveEmployee()
         {
