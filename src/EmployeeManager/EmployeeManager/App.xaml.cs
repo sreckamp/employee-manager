@@ -1,17 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
-using EmployManager.Model;
-using EmployManager.ViewModel;
+using EmployeeManager.Model;
+using EmployeeManager.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
-using Ninject;
 
-namespace EmployManager
+namespace EmployeeManager
 {
     /// <summary>
     /// Interaction logic for App.xaml

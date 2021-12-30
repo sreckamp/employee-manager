@@ -6,7 +6,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
-namespace EmployManager.Model
+namespace EmployeeManager.Model
 {
     /// <summary>
     /// Employee manager that utilizes SqLite as the backing store.
@@ -19,6 +19,7 @@ namespace EmployManager.Model
         public event EventHandler<Employee> EmployeeAdded;
         public event EventHandler<Employee> EmployeeDeleted;
         public event EventHandler<Employee> EmployeeUpdated;
+        public event EventHandler<Employee> EmployeeReverted;
 
         /// <inheritdoc/>
         public IEnumerable<Employee> Employees { get; }
@@ -99,6 +100,7 @@ namespace EmployManager.Model
         {
             CheckDisposed();
             _context.Entry(employee).Reload();
+            EmployeeReverted?.Invoke(this, employee);
         }
 
         private void CheckDisposed()

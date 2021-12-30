@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace EmployManager
+namespace EmployeeManager
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -24,6 +24,14 @@ namespace EmployManager
         {
             InitializeComponent();
             DataContext = App.Current.MainViewModel;
+        }
+        
+        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
+        {
+            base.OnMouseLeftButtonDown(e);
+
+            // Begin dragging the window
+            DragMove();
         }
     }
 }

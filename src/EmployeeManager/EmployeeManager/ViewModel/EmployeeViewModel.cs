@@ -2,11 +2,12 @@
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Media.Imaging;
-using EmployManager.Annotations;
-using EmployManager.Model;
+using EmployeeManager.Model;
+using Microsoft.Toolkit.Mvvm.Input;
 
-namespace EmployManager.ViewModel
+namespace EmployeeManager.ViewModel
 {
     public class EmployeeViewModel : INotifyPropertyChanged
     {
@@ -18,7 +19,20 @@ namespace EmployManager.ViewModel
         {
             _manager = manager ?? throw new ArgumentNullException(nameof(manager));
             _employee = employee ?? new Employee();
+            DeleteCommand = new RelayCommand(DeleteSelectedEmployee);
+            EditCommand = new RelayCommand(EditActiveEmployee);
+            SaveCommand = new RelayCommand(SaveActiveEmployee);
+            RevertCommand = new RelayCommand(RevertSelectedEmployee);
+            ShowVerificationCommand = new RelayCommand(() => IsVerification = true);
+            HideVerificationCommand = new RelayCommand(() => IsVerification = false);
         }
+
+        public IRelayCommand EditCommand { get; }
+        public IRelayCommand SaveCommand { get; }
+        public IRelayCommand RevertCommand { get; }
+        public IRelayCommand ShowVerificationCommand { get; }
+        public IRelayCommand HideVerificationCommand { get; }
+        public IRelayCommand DeleteCommand { get; }
 
         public string Name
         {
@@ -62,23 +76,61 @@ namespace EmployManager.ViewModel
             }
         }
 
-        public void Delete()
+        public Visibility EditVisibility => !IsReadOnly ? Visibility.Visible : Visibility.Collapsed;
+        public Visibility ReadOnlyVisibility => IsReadOnly ? Visibility.Visible : Visibility.Collapsed;
+
+        private bool _readOnly = true;
+        public bool IsReadOnly
+        {
+            get => _readOnly;
+            set
+            {
+                _readOnly = value;
+                OnPropertyChanged(nameof(IsReadOnly));
+                OnPropertyChanged(nameof(EditVisibility));
+                OnPropertyChanged(nameof(ReadOnlyVisibility));
+            }
+        }
+
+        private void DeleteSelectedEmployee()
         {
             _manager.Delete(_employee);
+            OnPropertyChanged(nameof(EditVisibility));
         }
 
-        public void Save()
+        private bool _isVerification = false;
+
+        private bool IsVerification
+        {
+            get => _isVerification;
+            set
+            {
+                _isVerification = value;
+                OnPropertyChanged(nameof(VerificationVisible));
+            }
+        }
+
+        public Visibility VerificationVisible => IsVerification ? Visibility.Visible : Visibility.Collapsed;
+
+        private void EditActiveEmployee()
+        {
+            IsReadOnly = false;
+        }
+
+        private void SaveActiveEmployee()
         {
             _manager.Save(_employee);
+            IsReadOnly = true;
         }
 
-        public void Revert()
+        private void RevertSelectedEmployee()
         {
             _image = null;
             _manager.Revert(_employee);
             OnPropertyChanged(nameof(Name));
             OnPropertyChanged(nameof(JobTitle));
             OnPropertyChanged(nameof(Image));
+            IsReadOnly = true;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

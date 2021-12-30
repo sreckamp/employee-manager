@@ -1,0 +1,4 @@
+[submodule "lcars"]
+	path = lcars
+	url = https://github.com/sreckamp/LCARSToolkit.git
+	branch = core5
