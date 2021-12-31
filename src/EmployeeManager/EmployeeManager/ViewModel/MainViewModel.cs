@@ -21,6 +21,7 @@ namespace EmployeeManager.ViewModel
             _manager.EmployeeDeleted += ListChanged;
             NotificationViewModel = new NotificationViewModel(_manager);
             AddCommand = new RelayCommand(AddEmployee);
+            ToggleAboutCommand = new RelayCommand(ToggleAbout);
             MinimizeWindowCommand = new RelayCommand(() => WindowState = WindowState.Minimized);
             MaximizeWindowCommand = new RelayCommand(() => WindowState = WindowState == WindowState.Maximized
                 ? WindowState.Normal
@@ -31,6 +32,7 @@ namespace EmployeeManager.ViewModel
         public IRelayCommand MinimizeWindowCommand { get; }
         public IRelayCommand MaximizeWindowCommand { get; }
         public IRelayCommand ShutdownCommand { get; }
+        public IRelayCommand ToggleAboutCommand { get; }
 
         private WindowState _windowState = WindowState.Maximized;
         public WindowState WindowState
@@ -54,6 +56,14 @@ namespace EmployeeManager.ViewModel
             OnPropertyChanged(nameof(Employees));
             CloseEmployeeView(sender, EventArgs.Empty);
         }
+
+        private void ToggleAbout()
+        {
+            DisplayAbout = !DisplayAbout;
+            OnPropertyChanged(nameof(DisplayAbout));
+        }
+
+        public bool DisplayAbout { get; private set; }
 
         public NotificationViewModel NotificationViewModel { get; }
 

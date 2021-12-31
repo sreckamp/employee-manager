@@ -90,6 +90,7 @@
                     <lcars:Rectangle Grid.Row="1" Width="{TemplateBinding Column}" Fill="{TemplateBinding Fill}" HorizontalAlignment="Left"/>
                     <lcars:LabeledButton Grid.Row="2"
                                          Content="Delete"
+                                         Margin="0,5,0,0"
                                          Width="{TemplateBinding Column}"
                                          Height="40"
                                          Background="{StaticResource InnerButtonColor}"
@@ -206,7 +207,7 @@
                                      Margin="10,0,0,0"/>
                         </StackPanel>
                     </StackPanel>
-                    <DockPanel Visibility="{Binding VerificationVisible}" Margin="3,0,0,5" Grid.Row="2">
+                    <DockPanel Visibility="{Binding VerificationVisible}" Margin="3,0,0,0" Grid.Row="2">
                         <Grid DockPanel.Dock="Bottom">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
