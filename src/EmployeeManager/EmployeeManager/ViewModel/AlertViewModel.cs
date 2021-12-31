@@ -1,47 +1,45 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows.Threading;
 using EmployeeManager.Model;
 
 namespace EmployeeManager.ViewModel
 {
-    public class AlertViewModel : INotifyPropertyChanged
+    public class NotificationViewModel : INotifyPropertyChanged
     {
-        public AlertViewModel(IEmployeeManager manager)
+        private readonly DispatcherTimer _timer = new() { Interval = TimeSpan.FromSeconds(8)};
+
+        public NotificationViewModel(IEmployeeManager manager)
         {
             manager.EmployeeAdded += (_, employee) =>
             {
-                AlertText = $"Added {employee.Name}";
+                NotificationText = $"Added {employee.Name}";
             };
             manager.EmployeeDeleted += (_, employee) =>
             {
-                AlertText = $"Deleted {employee.Name}";
+                NotificationText = $"Deleted {employee.Name}";
             };
-            manager.EmployeeUpdated += (_, employee) => AlertText = $"Updated {employee.Name}";
+            manager.EmployeeUpdated += (_, employee) => NotificationText = $"Updated {employee.Name}";
             _timer.Tick += (_, _) =>
             {
                 _timer.Stop();
-                AlertText = string.Empty;
+                NotificationText = string.Empty;
             };
         }
 
-        private string _alertText;
-        private DispatcherTimer _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(8)};
-
-        public string AlertText
+        private string _notificationText;
+        public string NotificationText
         {
-            get => _alertText;
+            get => _notificationText ?? string.Empty;
             private set
             {
-                Debug.WriteLine($"AlertText Updated: {_alertText}=>{value}");
-                _alertText = value;
+                _notificationText = value;
                 if (!string.IsNullOrEmpty(value))
                 {
                     _timer.Start();
                 }
-                OnPropertyChanged(nameof(AlertText));
+                OnPropertyChanged(nameof(NotificationText));
             }
         }
 

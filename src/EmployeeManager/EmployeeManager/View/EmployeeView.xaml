@@ -5,8 +5,35 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:lcars="clr-namespace:LCARSToolkit.Controls;assembly=LCARSToolkit.Controls"
              xmlns:local="clr-namespace:EmployeeManager.View"
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="InnerButtonColor" Color="{Binding Source={StaticResource LCARS_Blue}, Path=Color}"/>
+        <SolidColorBrush x:Key="AlertBorderColor" Color="{Binding Source={StaticResource LCARS_LightBlue}, Path=Color}"/>
+        <SolidColorBrush x:Key="AlertButtonColor" Color="{Binding Source={StaticResource LCARS_Blue}, Path=Color}"/>
+        <SolidColorBrush x:Key="AlertTextColor" Color="{Binding Source={StaticResource LCARS_Red}, Path=Color}"/>
+        <SolidColorBrush x:Key="LabelColor" Color="{Binding Source={StaticResource LCARS_PaleYellow}, Path=Color}"/>
+        <SolidColorBrush x:Key="ValueColor" Color="{Binding Source={StaticResource LCARS_Blue}, Path=Color}"/>
+        
+        <Style TargetType="TextBox" x:Key="EditTextBox">
+            <Setter Property="FontFamily" Value="{StaticResource LCARS}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="CaretBrush" Value="{StaticResource LCARS_Purple}"/>
+            <Setter Property="Foreground" Value="{StaticResource LCARS_White}"/>
+            <Setter Property="MinWidth" Value="50"/>
+            <Style.Triggers>
+                <Trigger Property="IsReadOnly" Value="True">
+                    <Setter Property="Foreground" Value="{StaticResource ValueColor}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="TextBlock" x:Key="LabelTextBlock" BasedOn="{StaticResource LcarsTextBlock}">
+            <Setter Property="Foreground" Value="{StaticResource LabelColor}"/>
+        </Style>
+    </UserControl.Resources>
     <UserControl.Template>
         <ControlTemplate TargetType="local:EmployeeView">
             <DockPanel>
@@ -30,18 +57,54 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Row="0">
-                        <lcars:LabeledButton Style="{StaticResource SideKey}" Content="Edit" Width="{TemplateBinding Column}" Height="40"
+                        <lcars:LabeledButton Content="Edit"
+                                             Style="{StaticResource SideButton}" 
+                                             Width="{TemplateBinding Column}"
+                                             Height="40"
+                                             Background="{StaticResource InnerButtonColor}"
                                              Visibility="{Binding ReadOnlyVisibility}"
                                              Command="{Binding EditCommand}"/>
-                        <lcars:LabeledButton Style="{StaticResource SideKey}" Content="Save" Width="{TemplateBinding Column}" Height="40"
+                        <lcars:LabeledButton Content="Save"
+                                             Style="{StaticResource SideButton}"
+                                             Width="{TemplateBinding Column}"
+                                             Height="40"
+                                             Background="{StaticResource InnerButtonColor}"
                                              Visibility="{Binding EditVisibility}"
                                              Command="{Binding SaveCommand}"/>
-                        <lcars:LabeledButton Style="{StaticResource SideKey}" Content="Cancel" Width="{TemplateBinding Column}" Height="40"
-                                             Command="{Binding RevertCommand}"/>
+                        <lcars:LabeledButton Width="{TemplateBinding Column}"
+                                             Height="40"
+                                             Background="{StaticResource InnerButtonColor}"
+                                             Command="{Binding RevertCommand}">
+                            <lcars:LabeledButton.Style>
+                                <Style TargetType="lcars:LabeledButton" BasedOn="{StaticResource SideButton}">
+                                    <Setter Property="Content" Value="Cancel"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsReadOnly}" Value="True">
+                                            <Setter Property="Content" Value="Close"/>
+                                        </DataTrigger>                                        
+                                    </Style.Triggers>
+                                </Style>
+                            </lcars:LabeledButton.Style>
+                        </lcars:LabeledButton>
                     </StackPanel>
                     <lcars:Rectangle Grid.Row="1" Width="{TemplateBinding Column}" Fill="{TemplateBinding Fill}" HorizontalAlignment="Left"/>
-                    <lcars:LabeledButton Grid.Row="2" Style="{StaticResource SideKey}" Content="Delete" Width="{TemplateBinding Column}" Height="40"
-                                         Command="{Binding ShowVerificationCommand}"/>
+                    <lcars:LabeledButton Grid.Row="2"
+                                         Content="Delete"
+                                         Width="{TemplateBinding Column}"
+                                         Height="40"
+                                         Background="{StaticResource InnerButtonColor}"
+                                         Command="{Binding ShowVerificationCommand}">
+                            <lcars:LabeledButton.Style>
+                                <Style TargetType="lcars:LabeledButton" BasedOn="{StaticResource SideButton}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsReadOnly}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </lcars:LabeledButton.Style>
+                        </lcars:LabeledButton>
                 </Grid>
                 <Grid>
                     <Grid.RowDefinitions>
@@ -49,52 +112,98 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <Image x:Name="UserImage" Grid.Row="0" Height="200" Margin="0,0,0,20" Source="{Binding Image}">
-                        <Image.Style>
-                            <Style TargetType="Image">
-                                <Setter Property="Visibility" Value="Visible"/>
-                                <Style.Triggers>
-                                    <Trigger Property="Source" Value="{x:Null}">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Image.Style>
-                    </Image>
-                    <Image Grid.Row="0" Height="200" Margin="0,0,0,20" Source="{StaticResource PlaceHolderImage}">
-                        <Image.Style>
-                            <Style TargetType="Image">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Source, ElementName=UserImage}" Value="{x:Null}">
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Image.Style>
-                    </Image>
+                    <StackPanel Grid.Row="0">
+                        <Image x:Name="UserImage" Height="200" Margin="0" Source="{Binding Image}">
+                            <b:Interaction.Triggers>
+                                <b:EventTrigger EventName="Drop">
+                                    <b:InvokeCommandAction Command="{Binding DropImageCommand}" PassEventArgsToCommand="True"/>
+                                </b:EventTrigger>
+                            </b:Interaction.Triggers>
+                            <Image.Style>
+                                <Style TargetType="Image">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Setter Property="AllowDrop" Value="True"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="Source" Value="{x:Null}">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </Trigger>
+                                        <DataTrigger Binding="{Binding IsReadOnly}" Value="True">
+                                            <Setter Property="AllowDrop" Value="False"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                        <Image Height="200" Margin="0" Source="{StaticResource PlaceHolderImage}">
+                            <b:Interaction.Triggers>
+                                <b:EventTrigger EventName="Drop">
+                                    <b:InvokeCommandAction Command="{Binding DropImageCommand}" PassEventArgsToCommand="True"/>
+                                </b:EventTrigger>
+                            </b:Interaction.Triggers>
+                            <Image.Style>
+                                <Style TargetType="Image">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Setter Property="AllowDrop" Value="True"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Source, ElementName=UserImage}" Value="{x:Null}">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsReadOnly}" Value="True">
+                                            <Setter Property="AllowDrop" Value="False"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                        <TextBlock Margin="0,10,0,0"
+                                   Foreground="{StaticResource LCARS_White}"
+                                   Text="DRAG AND DROP IMAGE TO REPLACE"
+                                   TextAlignment="Center"
+                                   FontSize="20">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock" BasedOn="{StaticResource LabelTextBlock}">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsReadOnly}" Value="True">
+                                            <Setter Property="Visibility" Value="Hidden"/>
+                                        </DataTrigger>                                        
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </StackPanel>
                     <StackPanel Grid.Row="1">
-                        <StackPanel Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource LabelTextBlock}"
+                                   Foreground="{StaticResource AlertTextColor}"
+                                   Text="NAME MUST BE DEFINED"
+                                   FontSize="20"
+                                   Visibility="{Binding NameWarningVisibility}"
+                                   Margin="100,0,0,0"/>
+                        <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
                             <TextBlock Style="{StaticResource LabelTextBlock}"
                                        Text="NAME:"
-                                       FontSize="30"
-                                       Margin="10,20,0,0"/>
+                                       FontSize="30"/>
                             <TextBox Style="{StaticResource EditTextBox}"
                                      IsReadOnly="{Binding IsReadOnly}"
                                      Text="{Binding Name}"
                                      FontSize="30"
-                                     Margin="10,20,0,0"/>
+                                     Margin="10,0,0,0"/>
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource LabelTextBlock}"
+                                   Foreground="{StaticResource AlertTextColor}"
+                                   Text="TITLE MUST BE DEFINED"
+                                   FontSize="20"
+                                   Visibility="{Binding TitleWarningVisibility}"
+                                   Margin="100,0,0,0"/>
+                        <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
                             <TextBlock Style="{StaticResource LabelTextBlock}"
                                        Text="TITLE:"
-                                       FontSize="30"
-                                       Margin="10,10,0,0"/>
+                                       FontSize="30"/>
                             <TextBox Style="{StaticResource EditTextBox}"
                                      IsReadOnly="{Binding IsReadOnly}"
                                      Text="{Binding JobTitle}"
                                      FontSize="30"
-                                     Margin="10,10,0,0"/>
+                                     Margin="10,0,0,0"/>
                         </StackPanel>
                     </StackPanel>
                     <DockPanel Visibility="{Binding VerificationVisible}" Margin="3,0,0,5" Grid.Row="2">
@@ -103,8 +212,8 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <lcars:Rectangle VerticalAlignment="Bottom" Height="40" Fill="{StaticResource Orange}"/>
-                            <lcars:Elbo Grid.Column="1" Bar="40" Column="60" InnerArcRadius="20" Corner="BottomRight" Fill="{StaticResource Orange}"/>
+                            <lcars:Rectangle VerticalAlignment="Bottom" Height="40" Fill="{StaticResource AlertBorderColor}"/>
+                            <lcars:Elbo Grid.Column="1" Bar="40" Column="60" InnerArcRadius="20" Corner="BottomRight" Fill="{StaticResource AlertBorderColor}"/>
                         </Grid>
                         <Grid DockPanel.Dock="Top">
                             <Grid.ColumnDefinitions>
@@ -112,22 +221,32 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <lcars:Stump Margin="20,0,0,0" Direction="Left" VerticalAlignment="Top" Diameter="20" Fill="{StaticResource Orange}"/>
-                            <lcars:Rectangle Grid.Column="1" VerticalAlignment="Top" Height="20" Fill="{StaticResource Orange}"/>
-                            <lcars:Elbo Grid.Column="2" Bar="20" Column="60" InnerArcRadius="20" Corner="TopRight" Fill="{StaticResource Orange}"/>
+                            <lcars:Stump Margin="20,0,0,0" Direction="Left" VerticalAlignment="Top" Diameter="20" Fill="{StaticResource AlertBorderColor}"/>
+                            <lcars:Rectangle Grid.Column="1" VerticalAlignment="Top" Height="20" Fill="{StaticResource AlertBorderColor}"/>
+                            <lcars:Elbo Grid.Column="2" Bar="20" Column="60" InnerArcRadius="20" Corner="TopRight" Fill="{StaticResource AlertBorderColor}"/>
                         </Grid>
-                        <lcars:Rectangle DockPanel.Dock="Right" HorizontalAlignment="Right" Width="60" Fill="{StaticResource Orange}"/>
+                        <lcars:Rectangle DockPanel.Dock="Right" HorizontalAlignment="Right" Width="60" Fill="{StaticResource AlertBorderColor}"/>
                         <UniformGrid Rows="2">
                             <TextBlock Grid.Row="0" Style="{StaticResource LcarsTextBlock}"
                                        Text="ARE YOU SURE YOU WANT TO DELETE THIS EMPLOYEE?  THIS ACTION IS NOT REVERSABLE."
                                        TextAlignment="Center" TextWrapping="Wrap"
                                        VerticalAlignment="Center"
                                        FontSize="40"
-                                       Foreground="White"/>
+                                       Foreground="{StaticResource AlertTextColor}"/>
                             <UniformGrid Grid.Row="1" Columns="2">
-                                <lcars:LabeledButton Grid.Column="0" HorizontalAlignment="Center" Height="60" Width="200" Content="YES"
+                                <lcars:LabeledButton Grid.Column="0"
+                                                     Content="YES"
+                                                     HorizontalAlignment="Center"
+                                                     Height="60"
+                                                     Width="200"
+                                                     Background="{StaticResource AlertButtonColor}"
                                                      Command="{Binding DeleteCommand}"/>
-                                <lcars:LabeledButton Grid.Column="1" HorizontalAlignment="Center" Height="60" Width="200" Content="NO"
+                                <lcars:LabeledButton Grid.Column="1"
+                                                     Content="NO"
+                                                     HorizontalAlignment="Center"
+                                                     Height="60"
+                                                     Width="200"
+                                                     Background="{StaticResource AlertButtonColor}"
                                                      Command="{Binding HideVerificationCommand}"/>
                             </UniformGrid>
                         </UniformGrid>

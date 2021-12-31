@@ -11,7 +11,6 @@ namespace EmployeeManager.Model
         event EventHandler<Employee> EmployeeAdded;
         event EventHandler<Employee> EmployeeDeleted;
         event EventHandler<Employee> EmployeeUpdated;
-        event EventHandler<Employee> EmployeeReverted;
 
         /// <summary>
         /// The list of active employees

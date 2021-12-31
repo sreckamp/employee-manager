@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.IO;
 
 namespace EmployeeManager.Model
 {
@@ -14,5 +15,15 @@ namespace EmployeeManager.Model
         [Required]
         public string Name { get; set; }
         public byte[] Image { get; set; }
+
+        public static byte[] ReadImageFile(string imagePath)
+        {
+            if (imagePath != null && File.Exists(imagePath))
+            {
+                return File.ReadAllBytes(imagePath);
+            }
+
+            return null;
+        }
     }
 }
