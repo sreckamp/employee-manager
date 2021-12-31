@@ -19,7 +19,6 @@ namespace EmployeeManager.Model
         public event EventHandler<Employee> EmployeeAdded;
         public event EventHandler<Employee> EmployeeDeleted;
         public event EventHandler<Employee> EmployeeUpdated;
-        public event EventHandler<Employee> EmployeeReverted;
 
         /// <inheritdoc/>
         public IEnumerable<Employee> Employees { get; }
@@ -56,11 +55,7 @@ namespace EmployeeManager.Model
         private void Add(string title, string name, string imagePath = null)
         {
             CheckDisposed();
-            byte[] imageData = null;
-            if (imagePath != null && File.Exists(imagePath))
-            {
-                imageData = File.ReadAllBytes(imagePath);
-            }
+            var imageData = Employee.ReadImageFile(imagePath);
             var newEmployee = new Employee {JobTitle = title, Name = name, Image = imageData};
             _context.Add(newEmployee);
             _context.SaveChanges();
@@ -100,7 +95,6 @@ namespace EmployeeManager.Model
         {
             CheckDisposed();
             _context.Entry(employee).Reload();
-            EmployeeReverted?.Invoke(this, employee);
         }
 
         private void CheckDisposed()

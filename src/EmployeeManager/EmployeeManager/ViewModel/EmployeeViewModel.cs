@@ -1,9 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 using EmployeeManager.Model;
 using Microsoft.Toolkit.Mvvm.Input;
 
@@ -13,7 +15,18 @@ namespace EmployeeManager.ViewModel
     {
         private readonly IEmployeeManager _manager;
         private readonly Employee _employee;
-        private BitmapImage _image = null;
+        private BitmapImage _image;
+        private readonly DispatcherTimer _timer = new() { Interval = TimeSpan.FromSeconds(8)};
+
+        public EventHandler EditCanceled;
+        public EventHandler ViewClosed;
+
+        private readonly string[] _imageFormats = new[]
+        {
+            ".bmp",
+            ".jpg",
+            ".png"
+        };
 
         public EmployeeViewModel(IEmployeeManager manager, Employee employee = null)
         {
@@ -25,6 +38,20 @@ namespace EmployeeManager.ViewModel
             RevertCommand = new RelayCommand(RevertSelectedEmployee);
             ShowVerificationCommand = new RelayCommand(() => IsVerification = true);
             HideVerificationCommand = new RelayCommand(() => IsVerification = false);
+            DropImageCommand = new RelayCommand<DragEventArgs>(DropImage);
+            _timer.Tick += (_, _) => HideWarnings();
+        }
+
+        private void DropImage(DragEventArgs e)
+        {
+            if (!e.Data.GetDataPresent(DataFormats.FileDrop)) return;
+            var files = (string[])e.Data.GetData(DataFormats.FileDrop) ?? Array.Empty<string>();
+            var newImage = Employee.ReadImageFile(
+                files.FirstOrDefault(path => _imageFormats.Contains(Path.GetExtension(path).ToLower())));
+            if(newImage == null) return;
+            _employee.Image = newImage;
+            _image = null;
+            OnPropertyChanged(nameof(Image));
         }
 
         public IRelayCommand EditCommand { get; }
@@ -33,6 +60,37 @@ namespace EmployeeManager.ViewModel
         public IRelayCommand ShowVerificationCommand { get; }
         public IRelayCommand HideVerificationCommand { get; }
         public IRelayCommand DeleteCommand { get; }
+        public IRelayCommand<DragEventArgs> DropImageCommand { get; }
+
+        private Visibility _nameWarningVisibility = Visibility.Hidden;
+        public Visibility NameWarningVisibility
+        {
+            get => _nameWarningVisibility;
+            set
+            {
+                _nameWarningVisibility = value;
+                if (value == Visibility.Visible)
+                {
+                    _timer.Start();
+                }
+                OnPropertyChanged(nameof(NameWarningVisibility));
+            }
+        }
+
+        private Visibility _titleWarningVisibility = Visibility.Hidden;
+        public Visibility TitleWarningVisibility
+        {
+            get => _titleWarningVisibility;
+            set
+            {
+                _titleWarningVisibility = value;
+                if (value == Visibility.Visible)
+                {
+                    _timer.Start();
+                }
+                OnPropertyChanged(nameof(TitleWarningVisibility));
+            }
+        }
 
         public string Name
         {
@@ -52,6 +110,13 @@ namespace EmployeeManager.ViewModel
                 _employee.JobTitle = value;
                 OnPropertyChanged(nameof(JobTitle));
             }
+        }
+
+        private void HideWarnings()
+        {
+            _timer.Stop();
+            NameWarningVisibility = Visibility.Hidden;
+            TitleWarningVisibility = Visibility.Hidden;
         }
 
         public BitmapImage Image
@@ -98,7 +163,7 @@ namespace EmployeeManager.ViewModel
             OnPropertyChanged(nameof(EditVisibility));
         }
 
-        private bool _isVerification = false;
+        private bool _isVerification;
 
         private bool IsVerification
         {
@@ -119,6 +184,21 @@ namespace EmployeeManager.ViewModel
 
         private void SaveActiveEmployee()
         {
+            var save = true;
+            if (string.IsNullOrEmpty(Name))
+            {
+                NameWarningVisibility = Visibility.Visible;
+                save = false;
+            }
+            if (string.IsNullOrEmpty(JobTitle))
+            {
+                TitleWarningVisibility = Visibility.Visible;
+                save = false;
+            }
+
+            if (!save) return;
+
+            HideWarnings();
             _manager.Save(_employee);
             IsReadOnly = true;
         }
@@ -130,6 +210,7 @@ namespace EmployeeManager.ViewModel
             OnPropertyChanged(nameof(Name));
             OnPropertyChanged(nameof(JobTitle));
             OnPropertyChanged(nameof(Image));
+            (IsReadOnly ? ViewClosed : EditCanceled)?.Invoke(this, EventArgs.Empty);
             IsReadOnly = true;
         }
 

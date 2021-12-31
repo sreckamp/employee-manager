@@ -1,0 +1,99 @@
+﻿<UserControl x:Class="EmployeeManager.View.AboutView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:EmployeeManager.View"
+             xmlns:lcars="clr-namespace:LCARSToolkit.Controls;assembly=LCARSToolkit.Controls"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Template>
+        <ControlTemplate TargetType="local:AboutView">            
+            <DockPanel>
+                <Grid DockPanel.Dock="Bottom">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <lcars:Elbo Corner="BottomLeft"
+                                Fill="{TemplateBinding Fill}"
+                                Column="{TemplateBinding LeftColumn}"
+                                Bar="{TemplateBinding Bar}"
+                                InnerArcRadius="{TemplateBinding InnerArcRadius}"/>
+                    <lcars:Rectangle Grid.Column="1"
+                                     VerticalAlignment="Bottom"
+                                     Height="{TemplateBinding Bar}"
+                                     Fill="{TemplateBinding Fill}"/>
+                    <lcars:Elbo Grid.Column="2" Corner="BottomRight"
+                                Fill="{TemplateBinding Fill}"
+                                Column="{TemplateBinding LeftColumn}"
+                                Bar="{TemplateBinding Bar}"
+                                InnerArcRadius="{TemplateBinding InnerArcRadius}"/>
+                </Grid>
+                <Grid DockPanel.Dock="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <lcars:Elbo Corner="TopLeft"
+                                    Fill="{TemplateBinding Fill}"
+                                    Column="{TemplateBinding LeftColumn}"
+                                    Bar="{TemplateBinding Bar}"
+                                    InnerArcRadius="{TemplateBinding InnerArcRadius}"
+                                    Margin="{TemplateBinding TopSpaceMargin}"/>
+                    <lcars:Rectangle Grid.Column="1"
+                                     VerticalAlignment="Top"
+                                     Height="{TemplateBinding Bar}"
+                                     Fill="{TemplateBinding Fill}"
+                                     Margin="{TemplateBinding TopSpaceMargin}"/>
+                    <StackPanel Grid.Column="2" Orientation="Horizontal">
+                        <TextBlock Text="RECKAMP EMPLOYEE MANAGEMENT SYSTEM" 
+                                   FontFamily="{StaticResource LCARS}"
+                                   FontSize="30" Margin="10,0,30,0" Height="30" VerticalAlignment="Bottom"
+                                   Foreground="{StaticResource LCARS_White}"
+                                   LineStackingStrategy="BlockLineHeight"
+                                   LineHeight="30"/>
+                        <lcars:Elbo Corner="BottomLeft"
+                                    Fill="{TemplateBinding Fill}"
+                                    Column="{TemplateBinding RightColumn}"
+                                    Bar="{TemplateBinding Bar}"
+                                    InnerArcRadius="{TemplateBinding InnerArcRadius}"
+                                    Margin="{TemplateBinding BottomSpaceMargin}"/>
+                        <lcars:Rectangle VerticalAlignment="Bottom"
+                                         Height="{TemplateBinding Bar}"
+                                         Width="30"
+                                         Fill="{TemplateBinding Fill}"
+                                         Margin="{TemplateBinding BottomSpaceMargin}"/>
+                        <lcars:Elbo Corner="TopRight"
+                                    Fill="{TemplateBinding Fill}"
+                                    Column="{TemplateBinding LeftColumn}"
+                                    Bar="{TemplateBinding Bar}"
+                                    InnerArcRadius="{TemplateBinding InnerArcRadius}"
+                                    Margin="{TemplateBinding TopSpaceMargin}"/>
+                    </StackPanel>
+                </Grid>
+                <lcars:Rectangle DockPanel.Dock="Left"
+                                 Fill="{TemplateBinding Fill}"
+                                 HorizontalAlignment="Left"
+                                 Width="{TemplateBinding LeftColumn}"/>
+                <ScrollViewer lcars:Lcars.Column="{TemplateBinding LeftColumn}"
+                              lcars:Lcars.Fill="{TemplateBinding Fill}"
+                              Style="{StaticResource LcarsRightScrollViewer}">
+                    <FlowDocumentScrollViewer VerticalScrollBarVisibility="Hidden">
+                        <local:AboutBoxContent/>
+                    </FlowDocumentScrollViewer>
+                </ScrollViewer>
+                <!-- <FlowDocumentScrollViewer lcars:Lcars.Column="{TemplateBinding LeftColumn}" -->
+                <!--                           lcars:Lcars.Fill="{TemplateBinding Fill}" -->
+                <!--                           VerticalScrollBarVisibility="Hidden"> -->
+                <!--     <FlowDocumentScrollViewer.Resources> -->
+                <!--         <Style TargetType="{x:Type ScrollViewer}" BasedOn="{StaticResource LcarsRightScrollViewer}"/> -->
+                <!--     </FlowDocumentScrollViewer.Resources> -->
+                <!--     <local:AboutBoxContent/> -->
+                <!-- </FlowDocumentScrollViewer> -->
+            </DockPanel>
+        </ControlTemplate>
+    </UserControl.Template>
+</UserControl>

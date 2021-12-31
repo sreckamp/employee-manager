@@ -13,73 +13,15 @@
         ResizeMode="CanResizeWithGrip"
         AllowsTransparency="True"
         Icon="{StaticResource Icon}"
-        Title="Reckamp Employee Management System" Height="700" Width="1200">
+        Title="Reckamp Employee Management System" Height="700" Width="1230">
+    <Window.Resources>
+        <SolidColorBrush x:Key="OuterBorderColor" Color="{Binding Source={StaticResource LCARS_PaleYellow}, Path=Color}"/>
+        <SolidColorBrush x:Key="OuterButtonColor" Color="{Binding Source={StaticResource LCARS_LightYellow}, Path=Color}"/>
+        <SolidColorBrush x:Key="InnerBorderColor" Color="{Binding Source={StaticResource LCARS_LightBlue}, Path=Color}"/>
+        <SolidColorBrush x:Key="NameColor" Color="{Binding Source={StaticResource LCARS_Blue}, Path=Color}"/>
+        <SolidColorBrush x:Key="TitleColor" Color="{Binding Source={StaticResource LCARS_PaleYellow}, Path=Color}"/>
+    </Window.Resources>
     <DockPanel Margin="10">
-        <Grid DockPanel.Dock="Top">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>  
-                <ColumnDefinition Width="Auto"></ColumnDefinition>  
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <lcars:Elbo Grid.Column="0" Column="200" Bar="50" InnerArcRadius="30" Fill="{StaticResource Static}" Corner="TopLeft"/>
-            <TextBlock Grid.Column="1" Text="R.E.M.S." Style="{StaticResource LcarsTextBlock}"
-                       FontSize="65"
-                       Margin="10,10"
-                       Height="50"
-                       VerticalAlignment="Top"
-                       Foreground="White"
-                       LineStackingStrategy="BlockLineHeight"
-                       LineHeight="50"/>
-            <lcars:Rectangle Grid.Column="2"
-                             DataContext="{Binding AlertViewModel}"
-                             Style="{StaticResource AlertRectangle}"
-                             Content="{Binding AlertText,NotifyOnTargetUpdated=True}"
-                             Fill="{StaticResource Static}"
-                             Height="50"
-                             VerticalAlignment="Top"/>
-            <lcars:LabeledButton Grid.Column="3"
-                                 Command="{Binding MinimizeWindowCommand}"
-                                 Content="&#x1F5D5;"
-                                 HorizontalContentAlignment="Center"
-                                 VerticalContentAlignment="Center"
-                                 Background="{StaticResource Static}"
-                                 Height="50"
-                                 VerticalAlignment="Top"
-                                 Margin="2,0"
-                                 Stumps="None"/>
-            <lcars:LabeledButton Grid.Column="4"
-                                 Command="{Binding MaximizeWindowCommand}"
-                                 Content="&#x1F5D6;"
-                                 HorizontalContentAlignment="Center"
-                                 VerticalContentAlignment="Center"
-                                 Background="{StaticResource Static}"
-                                 Height="50"
-                                 VerticalAlignment="Top"
-                                 Margin="0,0,2,0"
-                                 Stumps="None"/>
-            <lcars:LabeledButton Grid.Column="5"
-                                 Command="{Binding ShutdownCommand}"
-                                 Content="X"
-                                 HorizontalContentAlignment="Center"
-                                 VerticalContentAlignment="Center"
-                                 Background="{StaticResource Static}"
-                                 Height="50"
-                                 VerticalAlignment="Top"
-                                 Stumps="Right"/>
-        </Grid>
-        <Grid DockPanel.Dock="Bottom">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>  
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <lcars:Elbo Grid.Column="0" Column="200" Bar="50" InnerArcRadius="30" Fill="{StaticResource Static}" Corner="BottomLeft"/>
-            <lcars:Rectangle Grid.Column="1" Fill="{StaticResource Static}" Height="50" VerticalAlignment="Bottom"/>
-            <lcars:Stump Grid.Column="2" Fill="{StaticResource Static}" Diameter="50" VerticalAlignment="Bottom"/>
-        </Grid>
         <Grid DockPanel.Dock="Left">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"></RowDefinition>  
@@ -87,76 +29,211 @@
                 <RowDefinition Height="Auto"></RowDefinition>  
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0">
-                <lcars:LabeledButton Visibility="{Binding ListVisibility}"
-                                     Style="{StaticResource SideKey}"
-                                     Command="{Binding AddCommand}"
-                                     IsEnabled="{Binding ShowingSelection}"
+                <lcars:Elbo Grid.Column="0" Column="200" Bar="50" InnerArcRadius="30" Fill="{StaticResource OuterBorderColor}" Corner="TopLeft"/>
+                <lcars:LabeledButton Command="{Binding AddCommand}"
                                      Content="Add Employee"
-                                     Background="{StaticResource Primary}"
-                                     Height="150" Width="200"/>
+                                     Background="{StaticResource OuterButtonColor}"
+                                     Height="150" Width="200">
+                    <lcars:LabeledButton.Style>
+                        <Style TargetType="lcars:LabeledButton" BasedOn="{StaticResource SideButton}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Active}" Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding DisplayAbout}" Value="True">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </lcars:LabeledButton.Style>
+                </lcars:LabeledButton>
             </StackPanel>
-            <lcars:Rectangle Grid.Row="1" Fill="{StaticResource Static}" Width="200" HorizontalAlignment="Left" />
-            <lcars:LabeledButton Grid.Row="2"
-                                 Style="{StaticResource SideKey}"
-                                 Content="about r.e.m.s."
-                                 Background="{StaticResource Primary}"
-                                 Height="150" Width="200"/>
+            <lcars:Rectangle Grid.Row="1" Fill="{StaticResource OuterBorderColor}" Width="200" HorizontalAlignment="Left" />
+            <lcars:Elbo Grid.Row="2" Column="200" Bar="50" InnerArcRadius="30" Fill="{StaticResource OuterBorderColor}" Corner="BottomLeft"/>
         </Grid>
-        <Grid>
+        <Grid DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>  
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal" Grid.Column="0">
+                <Viewbox Margin="5,0" Height="50">
+                    <TextBlock Text="R.E.M.S." Style="{StaticResource LcarsTextBlock}"
+                               Margin="0,-3,0,-6"
+                               FontSize="50"
+                               ClipToBounds="True"
+                               Height="50"
+                               VerticalAlignment="Top"
+                               Foreground="{StaticResource LCARS_White}"
+                               LineStackingStrategy="BlockLineHeight"
+                               LineHeight="53"/>
+                </Viewbox>
+                <lcars:Rectangle Fill="{StaticResource OuterBorderColor}"
+                                 Height="50" Width="60"
+                                 VerticalAlignment="Top"/>
+            </StackPanel>
+            <lcars:Rectangle Grid.Column="1"
+                             DataContext="{Binding NotificationViewModel}"
+                             Style="{StaticResource NotificationRectangle}"
+                             Content="{Binding NotificationText,NotifyOnTargetUpdated=True}"
+                             Height="50"
+                             VerticalAlignment="Top"/>
+            <StackPanel Orientation="Horizontal" Grid.Column="2">
+            <lcars:Rectangle Fill="{StaticResource OuterBorderColor}"
+                             Height="50" Width="60"
+                             VerticalAlignment="Top"/>
+            <lcars:LabeledButton Command="{Binding ToggleAboutCommand}"
+                                 Margin="2,0,0,0"
+                                 VerticalAlignment="Top"
+                                 Background="{StaticResource OuterButtonColor}"
+                                 Height="50" Width="200">
+                <lcars:LabeledButton.Style>
+                    <Style TargetType="lcars:LabeledButton" BasedOn="{StaticResource SideButton}">
+                        <Setter Property="Content" Value="about R.E.M.S."/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding DisplayAbout}" Value="True">
+                                <Setter Property="Content" Value="Close"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </lcars:LabeledButton.Style>
+            </lcars:LabeledButton>
+            <lcars:LabeledButton Command="{Binding MinimizeWindowCommand}"
+                                 Content="&#x1F5D5;"
+                                 HorizontalContentAlignment="Center"
+                                 VerticalContentAlignment="Center"
+                                 Background="{StaticResource OuterBorderColor}"
+                                 Height="50"
+                                 VerticalAlignment="Top"
+                                 Margin="2,0"
+                                 Stumps="None"/>
+            <lcars:LabeledButton Command="{Binding MaximizeWindowCommand}"
+                                 Content="&#x1F5D6;"
+                                 HorizontalContentAlignment="Center"
+                                 VerticalContentAlignment="Center"
+                                 Background="{StaticResource OuterBorderColor}"
+                                 Height="50"
+                                 VerticalAlignment="Top"
+                                 Margin="0,0,2,0"
+                                 Stumps="None"/>
+            <lcars:LabeledButton
+                                 Command="{Binding ShutdownCommand}"
+                                 Content="X"
+                                 HorizontalContentAlignment="Center"
+                                 VerticalContentAlignment="Center"
+                                 Background="{StaticResource OuterBorderColor}"
+                                 Height="50"
+                                 VerticalAlignment="Top"
+                                 Stumps="Right"/>
+            </StackPanel>
+        </Grid>
+        <Grid DockPanel.Dock="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <lcars:Rectangle Fill="{StaticResource OuterBorderColor}" Height="50" VerticalAlignment="Bottom"/>
+            <lcars:Stump Grid.Column="1" Fill="{StaticResource OuterBorderColor}" Diameter="50" VerticalAlignment="Bottom"/>
+        </Grid>
+        <Grid Margin = "0,0,20,15">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <DockPanel Grid.Column="1">
-                <ListBox IsEnabled="{Binding ShowingSelection}"
-                          ItemsSource="{Binding Employees, Mode=OneWay}"
-                          SelectedItem="{Binding Selected}"
-                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                          Style="{StaticResource CListBox}"
-                          Foreground="{StaticResource Orange}"
-                          lcars:Title.Text="EMPLOYEES"
-                          Margin = "20,0">
-                    <ListBox.ItemContainerStyle> 
-                        <Style TargetType="ListBoxItem">
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter> 
-                            <Setter Property="Background" Value="Black"/> 
-                            <Setter Property="BorderThickness" Value="0"/>
-                        </Style>
-                    </ListBox.ItemContainerStyle>
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Row="0" Grid.Column="0" 
-                                           Style="{StaticResource LcarsTextBlock}"
-                                           Text="{Binding Name, Converter={StaticResource ToUpperConverter}}"
-                                           FontSize="30"
-                                           VerticalAlignment="Center"
-                                           HorizontalAlignment="Left"
-                                           Foreground="Orange"/>
-                                <TextBlock Grid.Row="0" Grid.Column="1" 
-                                           Style="{StaticResource LcarsTextBlock}"
-                                           Text="{Binding JobTitle, Converter={StaticResource ToUpperConverter}}"
-                                           FontSize="20"
-                                           VerticalAlignment="Center"
-                                           HorizontalAlignment="Right"
-                                           Foreground="{StaticResource Unavailable}"/>
-                            </Grid>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </DockPanel>
+            <ListBox Grid.Column="1"
+                     Margin = "0,20,0,0"
+                     IsEnabled="{Binding Active.IsReadOnly, FallbackValue='True'}"
+                     ItemsSource="{Binding Employees, Mode=OneWay}"
+                     SelectedItem="{Binding Selected}"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     lcars:Lcars.Bar="10"
+                     lcars:Lcars.Column="40"
+                     lcars:Lcars.InnerArcRadius="30"
+                     lcars:Lcars.Fill="{StaticResource InnerBorderColor}"
+                     lcars:Lcars.Text="EMPLOYEES">
+                <ListBox.Style>
+                    <Style TargetType="ListBox" BasedOn="{StaticResource CListBox}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding DisplayAbout}" Value="False">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListBox.Style>
+                <ListBox.ItemContainerStyle> 
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/> 
+                        <Setter Property="Background" Value="Black"/> 
+                        <Setter Property="BorderThickness" Value="0"/>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" 
+                                       Style="{StaticResource LcarsTextBlock}"
+                                       Text="{Binding Name, Converter={StaticResource ToUpperConverter}}"
+                                       FontSize="30"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Left"
+                                       Foreground="{StaticResource NameColor}"/>
+                            <TextBlock Grid.Row="0" Grid.Column="1" 
+                                       Style="{StaticResource LcarsTextBlock}"
+                                       Text="{Binding JobTitle, Converter={StaticResource ToUpperConverter}}"
+                                       FontSize="20"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Right"
+                                       Foreground="{StaticResource TitleColor}"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
             <view:EmployeeView Grid.Column="0"
-                               Margin="20,0,0,0"
+                               Margin = "0,20,30,0"
                                Width="750"
                                Column="150"
                                Bar="30"
                                InnerArcRadius="20"
-                               Visibility="{Binding DataContext.EmployeeVisibility, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:MainWindow}}}"
-                               DataContext="{Binding Active}"/>
+                               Fill="{StaticResource InnerBorderColor}"
+                               DataContext="{Binding Active}">
+                <view:EmployeeView.Style>
+                    <Style TargetType="view:EmployeeView">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding DataContext, RelativeSource={RelativeSource Self}}" Value="{x:Null}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding DataContext.DisplayAbout, RelativeSource={RelativeSource Mode=FindAncestor,AncestorLevel=1,AncestorType=local:MainWindow}}" Value="True">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </view:EmployeeView.Style>
+            </view:EmployeeView>
+            <view:AboutView Grid.Column="0" Grid.ColumnSpan="2"
+                            Margin="0,3,0,0"
+                            Fill="{StaticResource InnerBorderColor}"
+                            Bar="10"
+                            LeftColumn="40"
+                            RightColumn="200">
+                <view:AboutView.Style>
+                    <Style TargetType="view:AboutView">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding DisplayAbout}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </view:AboutView.Style>
+            </view:AboutView>
         </Grid>
     </DockPanel>
 </Window>

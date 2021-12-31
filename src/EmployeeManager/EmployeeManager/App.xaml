@@ -11,30 +11,20 @@
 
             <BitmapImage x:Key="PlaceHolderImage" UriSource="pack://application:,,,/EmployeeManager;component/images/star-trek-placeholder.png"/>
             <BitmapImage x:Key="Icon" UriSource="pack://application:,,,/EmployeeManager;component/images/star-trek-badge.ico"/>
-            <Style TargetType="TextBox" x:Key="EditTextBox">
-                <Setter Property="FontFamily" Value="{StaticResource LCARS}"/>
-                <Setter Property="Background" Value="Transparent"/>
-                <Setter Property="BorderThickness" Value="0"/>
-                <Setter Property="CaretBrush" Value="DarkCyan"/>
-                <Setter Property="Foreground" Value="White"/>
-                <Setter Property="MinWidth" Value="50"/>
-                <Style.Triggers>
-                    <Trigger Property="IsReadOnly" Value="True">
-                        <Setter Property="Foreground" Value="DarkCyan"/>
-                    </Trigger>
-                </Style.Triggers>
-            </Style>
 
-            <Style TargetType="lcars:Rectangle" x:Key="AlertRectangle">
+            <Style TargetType="lcars:Rectangle" x:Key="NotificationRectangle">
                 <Setter Property="HorizontalContentAlignment" Value="Right"/>
                 <Setter Property="VerticalContentAlignment" Value="Bottom"/>
                 <Setter Property="FontFamily" Value="{StaticResource LCARS}"/>
                 <Setter Property="FontSize" Value="40"/>
-                <!-- <Setter Property="Foreground" Value="White"/> -->
-            </Style>
-
-            <Style TargetType="TextBlock" x:Key="LabelTextBlock" BasedOn="{StaticResource LcarsTextBlock}">
-                <Setter Property="Foreground" Value="Plum"/>
+                <Setter Property="Foreground" Value="{StaticResource LCARS_PaleYellow}"/>
+                <Setter Property="Fill" Value="{StaticResource LCARS_Blue}"/>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Path=Content,
+                                RelativeSource={RelativeSource Self}}" Value="">
+                        <Setter Property="Fill" Value="{StaticResource LCARS_PaleYellow}"/>
+                    </DataTrigger>
+                </Style.Triggers>
             </Style>
         </ResourceDictionary>
     </Application.Resources>

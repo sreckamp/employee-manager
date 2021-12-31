@@ -1,0 +1,103 @@
+﻿<FlowDocument x:Class="EmployeeManager.View.AboutBoxContent"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             FontFamily="{StaticResource LCARS}"
+             FontSize="20"
+             PagePadding="0,0,30,0"
+             TextAlignment="Left"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <FlowDocument.Resources>
+        <Thickness x:Key="ParagraphMargin" Left="60"/>
+        <SolidColorBrush x:Key="SummaryColor" Color="{Binding Source={StaticResource LCARS_RichOrange}, Path=Color}"/>
+        <SolidColorBrush x:Key="HeaderColor" Color="{Binding Source={StaticResource LCARS_Blue}, Path=Color}"/>
+        <SolidColorBrush x:Key="TextColor" Color="{Binding Source={StaticResource LCARS_PaleYellow}, Path=Color}"/>
+        <Style TargetType="{x:Type List}">
+            <Setter Property="Margin" Value="0,10,0,0"/>
+        </Style>
+        <Style x:Key="SectionHeader" TargetType="Paragraph">
+            <Setter Property="Margin" Value="0,40,0,0"/>
+            <Setter Property="Foreground" Value="{StaticResource HeaderColor}"/>
+        </Style>
+    </FlowDocument.Resources>
+    <FlowDocument.Style>
+        <Style TargetType="FlowDocument">
+            <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+        </Style>
+    </FlowDocument.Style>
+    <Paragraph TextAlignment="Center" Margin="0" Foreground="{StaticResource SummaryColor}">
+        <Run FontSize="35" Foreground="{StaticResource LCARS_White}">R.E.M.S.</Run><LineBreak/>
+        <Run FontSize="24">It's Dreamy!</Run><LineBreak/>
+        <Run FontSize="20" Foreground="{StaticResource LCARS_LightBlue}">https://github.com/sreckamp/employee-manager</Run>
+        <Figure Width="675" HorizontalAnchor="PageCenter" Margin="0,2">
+            <Paragraph TextAlignment="Left" Margin="0">
+            <Italic> Thank you for the opportunity to create this project.  It was a lot of fun to design the application and
+            style it as an homage to Star Trek.  I hope you enjoy it!</Italic>
+            </Paragraph>
+        </Figure>
+    </Paragraph>
+    <Paragraph Margin="0,80,0,0"><Run Foreground="{StaticResource HeaderColor}">AUTHOR:</Run></Paragraph>
+    <Paragraph Margin="{StaticResource ParagraphMargin}">
+        Steve Reckamp<LineBreak/>
+        sreckamp@gmail.com<LineBreak/>
+        815.307.0018
+    </Paragraph>
+    <Paragraph Style="{StaticResource SectionHeader}">FUNCTIONAL REQUIREMENT:S</Paragraph>
+    <List>
+        <ListItem>
+            <Paragraph><Run Foreground="{StaticResource HeaderColor}">INSERT EMPLOYEE:</Run>
+                Add new employees using the ADD EMPLOYEE Button on the left.</Paragraph>
+        </ListItem>
+        <ListItem>
+            <Paragraph><Run Foreground="{StaticResource HeaderColor}">VIEW EMPLOYEE:</Run>
+                Employees can be viewed by clicking on their name. You can hide the
+                employee view by clicking CLOSE.</Paragraph>
+        </ListItem>
+        <ListItem>
+            <Paragraph><Run Foreground="{StaticResource HeaderColor}">UPDATE EMPLOYEE:</Run>
+                While viewing an employee, click on the EDIT button.
+                Edits can be saved using the SAVE button or discarded using the CANCEL button.</Paragraph>
+        </ListItem>
+        <ListItem>
+            <Paragraph><Run Foreground="{StaticResource HeaderColor}">DELETE EMPLOYEE:</Run>
+                While viewing an employee, click on the DELETE button. Confirm the 
+                delete in the dialog.</Paragraph>
+        </ListItem>
+        <ListItem>
+            <Paragraph><Run Foreground="{StaticResource HeaderColor}">EVENTS:</Run>
+                Events are triggered when the user adds, deletes, or updates an employee.  The
+                action and the name of the employee is shown across the top of the application.</Paragraph>
+        </ListItem>
+        <ListItem>
+            <Paragraph><Run Foreground="{StaticResource HeaderColor}">EMPLOYEE:</Run>
+                The employee record consists of a Name and Title (both required) and
+                an optional image.</Paragraph>
+        </ListItem>
+        <ListItem>
+            <Paragraph><Run Foreground="{StaticResource HeaderColor}">PERSISTENCE:</Run>
+                The employee database is persisted across runs of the application.</Paragraph>
+        </ListItem>
+    </List>
+    <Paragraph Style="{StaticResource SectionHeader}">TECHNICAL CHOICES:</Paragraph>
+    <List>
+        <ListItem>
+            <Paragraph><Run Foreground="{StaticResource HeaderColor}">DATABASE:</Run>
+                Embedded SQLite with Entity Framework.  This creates a straight-forward method to persist the data and
+                abstracts the data from the application.  The file employees.db can be deleted and the default entries
+                will be created when the application starts next.</Paragraph>
+        </ListItem>
+        <ListItem>
+            <Paragraph><Run Foreground="{StaticResource HeaderColor}">WPF WITH MVVM:</Run>
+                Using the Windows Presentation Framework and Model, View, View-Model pattern separates concerns between
+                how the data is captured, how it is displayed, and how the application state is stored.</Paragraph>
+        </ListItem>
+        <ListItem>
+            <Paragraph><Run Foreground="{StaticResource HeaderColor}">LCARS TOOLKIT:</Run>
+                As a start for the <Italic>Star Trek</Italic>&#160;&#160;theme, I found the LCARSToolkit by Michael Osthege
+                (https://github.com/michaelosthege/LCARSToolkit").  Unfortunately, it did not support .NET Core 5, so I forked
+                it as part of this work.</Paragraph>
+        </ListItem>
+    </List>
+</FlowDocument>

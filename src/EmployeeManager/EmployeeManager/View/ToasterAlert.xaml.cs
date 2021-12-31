@@ -16,11 +16,7 @@ namespace EmployeeManager.View
         public string Text
         {
             get => (string)GetValue(TextProperty);
-            set
-            {
-                Debug.WriteLine($"Toaster.Text:{Text}=>{value}");
-                SetValue(TextProperty, value);
-            }
+            set => SetValue(TextProperty, value);
         }
 
         /// <summary>

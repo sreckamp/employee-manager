@@ -19,10 +19,9 @@ namespace EmployeeManager.ViewModel
             _manager = manager ?? throw new ArgumentNullException(nameof(manager));
             _manager.EmployeeAdded += ListChanged;
             _manager.EmployeeDeleted += ListChanged;
-            _manager.EmployeeUpdated += CloseEmployeeView;
-            _manager.EmployeeReverted += CloseEmployeeView;
-            AlertViewModel = new AlertViewModel(_manager);
+            NotificationViewModel = new NotificationViewModel(_manager);
             AddCommand = new RelayCommand(AddEmployee);
+            ToggleAboutCommand = new RelayCommand(ToggleAbout);
             MinimizeWindowCommand = new RelayCommand(() => WindowState = WindowState.Minimized);
             MaximizeWindowCommand = new RelayCommand(() => WindowState = WindowState == WindowState.Maximized
                 ? WindowState.Normal
@@ -33,6 +32,7 @@ namespace EmployeeManager.ViewModel
         public IRelayCommand MinimizeWindowCommand { get; }
         public IRelayCommand MaximizeWindowCommand { get; }
         public IRelayCommand ShutdownCommand { get; }
+        public IRelayCommand ToggleAboutCommand { get; }
 
         private WindowState _windowState = WindowState.Maximized;
         public WindowState WindowState
@@ -44,60 +44,74 @@ namespace EmployeeManager.ViewModel
                 OnPropertyChanged(nameof(WindowState));
             }
         }
-        private void CloseEmployeeView(object sender, Employee e)
+        private void CloseEmployeeView(object sender, EventArgs e)
         {
-            Debug.WriteLine("Close View");
             Active = null;
             Selected = null;
         }
 
         private void ListChanged(object sender, Employee e)
         {
-            Debug.WriteLine("List Changed");
             OnPropertyChanged(nameof(Employees));
-            CloseEmployeeView(sender, e);
+            CloseEmployeeView(sender, EventArgs.Empty);
         }
 
-        private EmployeeViewModel _active;
+        private void ToggleAbout()
+        {
+            DisplayAbout = !DisplayAbout;
+            OnPropertyChanged(nameof(DisplayAbout));
+        }
+
+        public bool DisplayAbout { get; private set; }
+
+        public NotificationViewModel NotificationViewModel { get; }
+
         private EmployeeViewModel _selected;
-
-        public bool ShowingSelection => Selected == Active;
-        public bool NotShowingSelection => !ShowingSelection;
-
-        public AlertViewModel AlertViewModel { get; }
-
         public EmployeeViewModel Selected
         {
             get => _selected;
             set
             {
+                BeforeActiveChange();
                 _selected = value;
-                OnPropertyChanged(nameof(Active));
+                AfterActiveChange();
                 OnPropertyChanged(nameof(Selected));
-                OnPropertyChanged(nameof(ListVisibility));
-                OnPropertyChanged(nameof(EmployeeVisibility));
-                OnPropertyChanged(nameof(ShowingSelection));
-                OnPropertyChanged(nameof(NotShowingSelection));
             }
         }
 
+        private EmployeeViewModel _active;
         public EmployeeViewModel Active
         {
             get => _active ?? _selected;
             set
             {
+                BeforeActiveChange();
                 _active = value;
-                OnPropertyChanged(nameof(Active));
-                OnPropertyChanged(nameof(ListVisibility));
-                OnPropertyChanged(nameof(EmployeeVisibility));
-                OnPropertyChanged(nameof(ShowingSelection));
-                OnPropertyChanged(nameof(NotShowingSelection));
+                AfterActiveChange();
             }
         }
 
-        public Visibility ListVisibility => Active == null ? Visibility.Visible : Visibility.Collapsed;
-        public Visibility EmployeeVisibility => Active != null ? Visibility.Visible : Visibility.Collapsed;
-
+        private void BeforeActiveChange()
+        {
+            if (_active != null)
+            {
+                _active.EditCanceled -= CloseEmployeeView;
+            }
+            if (Active == null) return;
+            Active.ViewClosed -= CloseEmployeeView;
+        }
+        
+        private void AfterActiveChange()
+        {
+            OnPropertyChanged(nameof(Active));
+            if (_active != null)
+            {
+                _active.EditCanceled += CloseEmployeeView;
+            }
+            if (Active == null) return;
+            Active.ViewClosed += CloseEmployeeView;
+        }
+        
         public IEnumerable<EmployeeViewModel> Employees =>
             _manager.Employees.Select(employee => new EmployeeViewModel(_manager, employee));
         public IRelayCommand AddCommand { get; }
