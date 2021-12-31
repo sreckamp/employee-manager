@@ -13,7 +13,7 @@
         ResizeMode="CanResizeWithGrip"
         AllowsTransparency="True"
         Icon="{StaticResource Icon}"
-        Title="Reckamp Employee Management System" Height="700" Width="1200">
+        Title="Reckamp Employee Management System" Height="700" Width="1230">
     <Window.Resources>
         <SolidColorBrush x:Key="OuterBorderColor" Color="{Binding Source={StaticResource LCARS_PaleYellow}, Path=Color}"/>
         <SolidColorBrush x:Key="OuterButtonColor" Color="{Binding Source={StaticResource LCARS_LightYellow}, Path=Color}"/>
@@ -40,6 +40,9 @@
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding Active}" Value="{x:Null}">
                                     <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding DisplayAbout}" Value="True">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -145,8 +148,11 @@
                      ItemsSource="{Binding Employees, Mode=OneWay}"
                      SelectedItem="{Binding Selected}"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                     Foreground="{StaticResource InnerBorderColor}"
-                     lcars:Title.Text="EMPLOYEES">
+                     lcars:Lcars.Bar="10"
+                     lcars:Lcars.Column="40"
+                     lcars:Lcars.InnerArcRadius="30"
+                     lcars:Lcars.Fill="{StaticResource InnerBorderColor}"
+                     lcars:Lcars.Text="EMPLOYEES">
                 <ListBox.Style>
                     <Style TargetType="ListBox" BasedOn="{StaticResource CListBox}">
                         <Setter Property="Visibility" Value="Collapsed"/>
@@ -213,7 +219,7 @@
             </view:EmployeeView>
             <view:AboutView Grid.Column="0" Grid.ColumnSpan="2"
                             Margin="0,3,0,0"
-                            Fill="{StaticResource LCARS_RichOrange}"
+                            Fill="{StaticResource InnerBorderColor}"
                             Bar="10"
                             LeftColumn="40"
                             RightColumn="200">

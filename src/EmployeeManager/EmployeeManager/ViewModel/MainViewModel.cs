@@ -46,7 +46,6 @@ namespace EmployeeManager.ViewModel
         }
         private void CloseEmployeeView(object sender, EventArgs e)
         {
-            Debug.WriteLine("Close");
             Active = null;
             Selected = null;
         }

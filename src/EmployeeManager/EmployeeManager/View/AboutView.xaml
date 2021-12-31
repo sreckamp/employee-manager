@@ -49,10 +49,12 @@
                                      Fill="{TemplateBinding Fill}"
                                      Margin="{TemplateBinding TopSpaceMargin}"/>
                     <StackPanel Grid.Column="2" Orientation="Horizontal">
-                        <lcars:Stump Direction="Right"
-                                     Fill="{TemplateBinding Fill}"
-                                     Diameter="{TemplateBinding Bar}"
-                                     Margin="{TemplateBinding TopSpaceMargin}"/>
+                        <TextBlock Text="RECKAMP EMPLOYEE MANAGEMENT SYSTEM" 
+                                   FontFamily="{StaticResource LCARS}"
+                                   FontSize="30" Margin="10,0,30,0" Height="30" VerticalAlignment="Bottom"
+                                   Foreground="{StaticResource LCARS_White}"
+                                   LineStackingStrategy="BlockLineHeight"
+                                   LineHeight="30"/>
                         <lcars:Elbo Corner="BottomLeft"
                                     Fill="{TemplateBinding Fill}"
                                     Column="{TemplateBinding RightColumn}"
@@ -76,38 +78,21 @@
                                  Fill="{TemplateBinding Fill}"
                                  HorizontalAlignment="Left"
                                  Width="{TemplateBinding LeftColumn}"/>
-                <lcars:Rectangle DockPanel.Dock="Right"
-                                 Fill="{TemplateBinding Fill}"
-                                 HorizontalAlignment="Right"
-                                 Width="{TemplateBinding LeftColumn}"/>
-                <FlowDocumentScrollViewer VerticalScrollBarVisibility="Hidden">
-                <!-- <FlowDocumentReader MaxZoom="100" MinZoom="100"> -->
-                    <FlowDocument FontFamily="{StaticResource LCARS}"
-                                  FontSize="24"
-                                  Foreground="{StaticResource LCARS_RichOrange}"
-                                  >
-                        <Paragraph FontSize="48" TextAlignment="Center">
-                            <Bold>Reckamp Employee Management System (R.E.M.S.)</Bold>
-                        </Paragraph>
-                        <Paragraph FontSize="32" TextAlignment="Right">
-                            <Italic>by: Steve Reckamp</Italic>
-                        </Paragraph>
-
-                        <List>
-                            <ListItem>
-                                <Paragraph>ListItem 1</Paragraph>
-                            </ListItem>
-                            <ListItem>
-                                <Paragraph>ListItem 2</Paragraph>
-                            </ListItem>
-                            <ListItem>
-                                <Paragraph>ListItem 3</Paragraph>
-                            </ListItem>
-                        </List>
-
-                    </FlowDocument>
-                <!-- </FlowDocumentReader> -->
-                </FlowDocumentScrollViewer>
+                <ScrollViewer lcars:Lcars.Column="{TemplateBinding LeftColumn}"
+                              lcars:Lcars.Fill="{TemplateBinding Fill}"
+                              Style="{StaticResource LcarsRightScrollViewer}">
+                    <FlowDocumentScrollViewer VerticalScrollBarVisibility="Hidden">
+                        <local:AboutBoxContent/>
+                    </FlowDocumentScrollViewer>
+                </ScrollViewer>
+                <!-- <FlowDocumentScrollViewer lcars:Lcars.Column="{TemplateBinding LeftColumn}" -->
+                <!--                           lcars:Lcars.Fill="{TemplateBinding Fill}" -->
+                <!--                           VerticalScrollBarVisibility="Hidden"> -->
+                <!--     <FlowDocumentScrollViewer.Resources> -->
+                <!--         <Style TargetType="{x:Type ScrollViewer}" BasedOn="{StaticResource LcarsRightScrollViewer}"/> -->
+                <!--     </FlowDocumentScrollViewer.Resources> -->
+                <!--     <local:AboutBoxContent/> -->
+                <!-- </FlowDocumentScrollViewer> -->
             </DockPanel>
         </ControlTemplate>
     </UserControl.Template>

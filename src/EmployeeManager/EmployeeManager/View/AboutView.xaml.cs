@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows;
 using System.Windows.Media;
 
 namespace EmployeeManager.View
@@ -11,7 +9,7 @@ namespace EmployeeManager.View
         {
             InitializeComponent();
         }
-        
+
         public Brush Fill
         {
             get { return (Brush)GetValue(FillProperty); }
@@ -65,7 +63,6 @@ namespace EmployeeManager.View
 
         private static void InnerArcRadiusChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            Debug.WriteLine("Update InnerArcRadius");
             var space = (double) e.NewValue;
             d.SetValue(TopSpaceMarginProperty, new Thickness(0, space, 0, 0));
             d.SetValue(BottomSpaceMarginProperty, new Thickness(0, 0, 0, space));
