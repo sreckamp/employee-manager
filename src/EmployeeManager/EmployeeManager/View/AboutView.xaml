@@ -85,14 +85,6 @@
                         <local:AboutBoxContent/>
                     </FlowDocumentScrollViewer>
                 </ScrollViewer>
-                <!-- <FlowDocumentScrollViewer lcars:Lcars.Column="{TemplateBinding LeftColumn}" -->
-                <!--                           lcars:Lcars.Fill="{TemplateBinding Fill}" -->
-                <!--                           VerticalScrollBarVisibility="Hidden"> -->
-                <!--     <FlowDocumentScrollViewer.Resources> -->
-                <!--         <Style TargetType="{x:Type ScrollViewer}" BasedOn="{StaticResource LcarsRightScrollViewer}"/> -->
-                <!--     </FlowDocumentScrollViewer.Resources> -->
-                <!--     <local:AboutBoxContent/> -->
-                <!-- </FlowDocumentScrollViewer> -->
             </DockPanel>
         </ControlTemplate>
     </UserControl.Template>
