@@ -35,21 +35,19 @@ namespace EmployeeManager.Model
             if (_context.Employees.Any()) return;
 
             Debug.WriteLine("Loading defaults");
-            Add("Co-Manager", "Jim Halpert", "images/jim.png");
-            Add("Co-Manager", "Michael Scott", "images/michael.png");
-            Add("Secretary", "Erin Hannon", "images/erin.jpg");
-            Add("Customer Service", "Kelly Kapoor");
-            Add("Sales", "Pam Halpert", "images/pam.jpg");
-            Add("Sales", "Stanley Hudson");
-            Add("Sales", "Phyllis Vance");
-            Add("Sales", "Dwight Bratton");
-            Add("Sales", "Andy Bernard", "images/andy.jpg");
-            Add("Quality Assurance", "Creed Bratton");
-            Add("Human Resources", "Toby Flenderson");
-            Add("Accounting", "Angela Martin", "images/angela.jpg");
-            Add("Accounting", "Kevin Malone");
-            Add("Accounting", "Oscar Martinez");
-            Add("Temp", "Ryan Howard", "images/ryan.png");
+            Add("Q", "Q", "images/Q.jpg");
+            Add("Captain", "Jean-Luc Picard", "images/Picard.jpg");
+            Add("Commander", "William T. Riker", "images/Riker.jpg");
+            Add("Commander", "Dr. Beverly Crusher", "images/DrCrusher.jpg");
+            Add("Commander", "Deanna Troi", "images/Troi.jpg");
+            Add("Lieutenant Commander", "Data", "images/Data.jpg");
+            Add("Lieutenant Commander", "Geordi La Forge", "images/LaForge.jpg");
+            Add("Lieutenant Commander", "Worf", "images/Worf.jpg");
+            Add("Lieutenant", "Natasha Yar", "images/Yar.jpg");
+            Add("First Petty Officer", "Miles O'Brien", "images/OBrien.jpg");
+            Add("Ensign", "Wesley Crusher", "images/Crusher.jpg");
+            Add("Lounge Hostess", "Guinan", "images/Guinan.jpg");
+            Add("Expendable", "Red Shirt");
         }
 
         private void Add(string title, string name, string imagePath = null)
