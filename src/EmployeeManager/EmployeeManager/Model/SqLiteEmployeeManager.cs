@@ -35,18 +35,18 @@ namespace EmployeeManager.Model
             if (_context.Employees.Any()) return;
 
             Debug.WriteLine("Loading defaults");
-            Add("Q", "Q", "images/Q.png");
-            Add("Captain", "Jean-Luc Picard", "images/Picard.png");
-            Add("Commander", "William T. Riker", "images/Riker.png");
-            Add("Commander", "Dr. Beverly Crusher", "images/DrCrusher.png");
-            Add("Commander", "Deanna Troi", "images/Troi.png");
-            Add("Lieutenant Commander", "Data", "images/Data.png");
-            Add("Lieutenant Commander", "Geordi La Forge", "images/LaForge.png");
-            Add("Lieutenant Commander", "Worf", "images/Worf.png");
-            Add("Lieutenant", "Natasha Yar", "images/Yar.png");
-            Add("First Petty Officer", "Miles O'Brien", "images/OBrien.png");
-            Add("Ensign", "Wesley Crusher", "images/Crusher.png");
-            Add("Lounge Hostess", "Guinan", "images/Guinan.png");
+            Add("Q", "Q", "images/Q.jpg");
+            Add("Captain", "Jean-Luc Picard", "images/Picard.jpg");
+            Add("Commander", "William T. Riker", "images/Riker.jpg");
+            Add("Commander", "Dr. Beverly Crusher", "images/DrCrusher.jpg");
+            Add("Commander", "Deanna Troi", "images/Troi.jpg");
+            Add("Lieutenant Commander", "Data", "images/Data.jpg");
+            Add("Lieutenant Commander", "Geordi La Forge", "images/LaForge.jpg");
+            Add("Lieutenant Commander", "Worf", "images/Worf.jpg");
+            Add("Lieutenant", "Natasha Yar", "images/Yar.jpg");
+            Add("First Petty Officer", "Miles O'Brien", "images/OBrien.jpg");
+            Add("Ensign", "Wesley Crusher", "images/Crusher.jpg");
+            Add("Lounge Hostess", "Guinan", "images/Guinan.jpg");
             Add("Expendable", "Red Shirt");
         }
 
